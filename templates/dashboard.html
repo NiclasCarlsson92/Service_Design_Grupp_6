@@ -1,0 +1,32 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+    <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
+    <br />
+    <table class="center">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Market Cap</th>
+        </tr>
+        <tr>
+            <td>Bitcoin</td>
+            <td>$41,461.56</td>
+            <td>$789,684,413,907</td>
+        </tr>
+        <tr>
+            <td>Ethereum</td>
+            <td>$3,100.29</td>
+            <td>$374,265,909,461</td>
+        </tr>
+        <tr>
+            <td>Solana</td>
+            <td>$107.91</td>
+            <td>$36,093,943,268</td>
+        </tr>
+    </table>
+{% endblock %}

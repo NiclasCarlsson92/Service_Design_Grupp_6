@@ -1,6 +1,4 @@
-
-
-def main():
+def api():
     # This example uses Python 2.7 and the python-request library.
 
     from requests import Request, Session
@@ -30,5 +28,5 @@ def main():
         print(e)
 
 if __name__ == '__main__':
-    main()
+    api()
 
