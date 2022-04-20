@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for
 from flask_login import logout_user, login_required, current_user
 from controllers.user_controller import get_all_but_current_users, get_user_by_id
 
