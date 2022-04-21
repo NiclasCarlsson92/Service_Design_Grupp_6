@@ -7,6 +7,6 @@ def get_user_balance():
 
 
 def get_tokens_owned():
-    # user = current_user
+    # wallet = current_user
 
-    # return every token name and amount owned by the user
+    # return every token name and amount owned by the wallet

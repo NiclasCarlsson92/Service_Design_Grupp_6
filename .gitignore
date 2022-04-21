@@ -2,3 +2,4 @@ db.sqlite
 venv/
 .idea/
 __pycache__/
+identifier.sqlite

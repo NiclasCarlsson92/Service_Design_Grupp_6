@@ -26,8 +26,8 @@ def create_app():
     from blueprints.open import bp_open
     app.register_blueprint(bp_open)
 
-    from blueprints.user import bp_user
-    app.register_blueprint(bp_user)
+    from blueprints.wallet import bp_wallet
+    app.register_blueprint(bp_wallet)
 
     from blueprints.admin import bp_admin
     app.register_blueprint(bp_admin)
