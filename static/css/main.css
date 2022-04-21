@@ -1,0 +1,164 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
+ body {
+       background-color: white;
+       text-align: center;
+       font-family: Arial, Helvetica, sans-serif;
+       margin: 0;
+
+       }
+
+        .menu-item {
+            margin: 5px;
+            color: black;
+            font-size: 25px;
+        }
+        .footer{
+            text-align: center;
+        }
+
+.menu {
+    padding: 10px;
+    background-color: whitesmoke;
+}
+
+hr {
+    margin: 0;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.left {
+  margin-right: 500px;
+}
+
+.right {
+  margin-left: 1500px;
+}
+
+.bottom {
+   position: absolute;
+   bottom: 20px;
+   margin-left: 200px;
+}
+
+ table{
+    align-items: center;
+    width: 20%;
+    background-color: #F7F9F9;
+ }
+
+ th {
+    background: #45B39D;
+    color: white;
+ }
+
+ .center-content {
+    display: flex;
+    align-items: center;
+    align-content: center;
+ }
+
+ .circle {
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+ }
+
+.online {
+    background: chartreuse;
+}
+
+.offline {
+    background: crimson;
+}
+
+.sup {
+    position: relative;
+    bottom: 1ex;
+    font-size: 80%;
+    color: black;
+}
+
+.no-new-msg {
+    color: black;
+}
+
+.new-msg {
+    color: #4CAF50;
+}
+
+#message-symbol {
+    font-size: 1em;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.sbutton {
+  border: none;
+  color: white;
+  padding: 6px 9px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+
+.button1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.button2 {
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+}
+
+.button2:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+.button3 {
+  background-color: white;
+  color: black;
+  border: 2px solid #CB4335;
+}
+
+.button3:hover {
+  background-color: #CB4335;
+  color: white;
+}
+
+.signupLogin {
+    border: 0;
+    padding: 7px;
+    margin-bottom: 2px;
+    border-radius: 2px;
+    background-color: whitesmoke;
+    font-size: 14px;
+}
