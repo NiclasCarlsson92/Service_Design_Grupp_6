@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import logout_user, login_required, current_user
-from passlib.hash import argon2
-from controllers.user_controller import get_all_but_current_users, get_user_by_id
+from blueprints.api import api_get
+
 
 bp_wallet = Blueprint('bp_wallet', __name__)
 
@@ -24,8 +24,11 @@ def wallet_get():
     user_activity = 'Visiting wallet'
     activity = APILogs(activity=user_activity)
 
+    # We use the kwargs to get a dict instead of a response
+    cryptos = api_get(dict=True)
+    print(cryptos)
     from app import db
     db.session.add(user, activity)
     db.session.commit()
 
-    return render_template('wallet.html', user=user, activity=activity)
+    return render_template('wallet.html', user=user, activity=activity, cryptos=cryptos)

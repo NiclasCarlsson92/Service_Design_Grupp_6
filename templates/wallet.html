@@ -11,22 +11,36 @@
         <tr>
             <th>Name</th>
             <th>Price</th>
-            <th>Market Cap</th>
         </tr>
-        <tr>
-            <td>Bitcoin</td>
-            <td>$41,461.56</td>
-            <td>$789,684,413,907</td>
-        </tr>
-        <tr>
-            <td>Ethereum</td>
-            <td>$3,100.29</td>
-            <td>$374,265,909,461</td>
-        </tr>
-        <tr>
-            <td>Solana</td>
-            <td>$107.91</td>
-            <td>$36,093,943,268</td>
-        </tr>
+           {% for key, value in cryptos.items() %}
+               <tr>
+                <td>{{key}}</td>
+                <td id="{{ key }}">{{value}}</td>
+               </tr>
+
+           {% endfor %}
     </table>
+{% endblock %}
+
+{% block scripts %}
+ <script>
+        setInterval(checkMessages, 15000);
+
+        function checkMessages() {
+            fetch("http://127.0.0.1:5000/api/v.1/cryptousd")
+            .then(response => response.json())
+            .then(crypto => {
+                let btc = crypto.BTC;
+                let eth = crypto.ETH;
+                let usdt = crypto.USDT;
+                let bnb = crypto.BNB;
+                let usdc = crypto.USDC;
+                document.getElementById("BTC").innerHTML = btc;
+                document.getElementById("ETH").innerHTML = eth;
+                document.getElementById("USDT").innerHTML = usdt;
+                document.getElementById("BNB").innerHTML = bnb;
+                document.getElementById("USDC").innerHTML = usdc;
+            });
+        }
+    </script>
 {% endblock %}
