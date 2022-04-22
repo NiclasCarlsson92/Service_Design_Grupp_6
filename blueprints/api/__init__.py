@@ -1,11 +1,15 @@
-import requests
 import json
-# from requests import Request, Session
-# from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-# import json
+
+import requests
+from flask import Blueprint, Response
+from flask_login import login_required
+
+bp_api = Blueprint('bp_api', __name__)
 
 
-def api():
+@bp_api.get("/api/v.1/cryptousd")
+@login_required
+def api_get(**kwargs):
     # This example uses Python 2.7 and the python-request library.
 
     headers = {
@@ -21,13 +25,16 @@ def api():
 
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 
+    # Response
     json_data = requests.get(url, params=params, headers=headers).json()
-
+    crypto = {}
     coins = json_data['data']
     for x in coins:
-        print(x['symbol'], x['quote']['USD']['price'])
+        # print(x['symbol'], x['quote']['USD']['price'])
+        crypto[x['symbol']] = x['quote']['USD']['price']
 
+    # kwargs return the dict whilst no kwargs returns a response with a json
+    if kwargs is not None:
+        return crypto
 
-if __name__ == '__main__':
-    api()
-
+    return Response(json.dumps(crypto), 200, content_type="application/json")
