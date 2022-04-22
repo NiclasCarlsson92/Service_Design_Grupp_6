@@ -1,6 +1,5 @@
 from flask_login import login_user
 from passlib.hash import argon2
-from models import User
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import logout_user, login_required, current_user
 
@@ -14,6 +13,7 @@ def login_get():
 
 @bp_open.post('/login')
 def login_post():
+    from models import User
     email = request.form['email']
     password = request.form['password']
     user = User.query.filter_by(email=email).first()
@@ -50,6 +50,7 @@ def signup_get():
 
 @bp_open.post('/signup')
 def signup_post():
+    from models import User
     name = request.form['name']
     email = request.form.get('email')
     password = request.form['password']
@@ -67,13 +68,14 @@ def signup_post():
         flash("Please enter a password")
         return redirect(url_for('bp_open.signup_get'))
 
-    new_user = User(name=name, email=email, password=hashed_password)
     from models import Wallet
-    wallet = Wallet(user_id=new_user.get_id())
-    new_user.wallet_id = wallet.id
-
+    new_user = User(name=name, email=email, password=hashed_password)
+    new_user.wallet_id = user.get_id()
+    new_wallet = Wallet()
+    # wallet = Wallet(user_id=new_user.get_id())
+    # new_user.wallet_id = wallet.id
     from app import db
-    db.session.add(new_user, wallet)
+    db.session.add(new_user, new_wallet)
     db.session.commit()
     login_user(new_user)
 

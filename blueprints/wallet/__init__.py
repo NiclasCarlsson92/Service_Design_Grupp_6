@@ -28,4 +28,4 @@ def wallet_get():
     db.session.add(user, activity)
     db.session.commit()
 
-    return render_template('Wallet.html', user=user, activity=activity)
+    return render_template('wallet.html', user=user, activity=activity)
