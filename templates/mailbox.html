@@ -11,9 +11,6 @@
     <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
         Home
     </a>
-    <a class="menu-item" href ={{ url_for('bp_open.signup_get') }}>
-        Sign up
-    </a>
     {% if current_user.is_authenticated %}
 
         <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get') }}">
@@ -23,10 +20,6 @@
             <i class="fa fa-fw fa-envelop-open no-new-msg" id="message-symbol"></i>
                 <span class="sup" id="message-cont"></span>
         </a>
-        <a class="menu-item" href="{{ url_for('bp_open.logout_get') }}">
-            Logout
-        </a>
-
     {% endif %}
 </div>
     <hr />

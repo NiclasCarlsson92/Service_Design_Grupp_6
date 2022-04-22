@@ -1,35 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+{% extends "base-template.html" %}
 
-</head>
-<body>
-<div class="menu">
-    <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
-        Home
-    </a>
-    {% if current_user.is_authenticated %}
+{% block title %}
+    Dashboard
+{% endblock %}
 
-        <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get') }}">
-            Wallet
-        </a>
-        <a href="{{ url_for('bp_wallet.wallet_get') }}">
-            <i class="fa fa-fw fa-envelop-open no-new-msg" id="message-symbol"></i>
-                <span class="sup" id="message-cont"></span>
-        </a>
-    {% endif %}
-</div>
-    <hr />
-    {% block content %}
-    {% endblock %}
-
-
-
-    {% block scripts %}
-    {% endblock %}
-    <a class="bottom" href="https://kyh.se/utbildningar/internet-of-things-developer/" >This is a crypto-exchanger simulator developed by a bunch of students of IoT Developer at KYH.</a>
-</body>
-</html>
+{% block content %}
+    <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
+    <br />
+    <table class="center">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Market Cap</th>
+        </tr>
+        <tr>
+            <td>Bitcoin</td>
+            <td>$41,461.56</td>
+            <td>$789,684,413,907</td>
+        </tr>
+        <tr>
+            <td>Ethereum</td>
+            <td>$3,100.29</td>
+            <td>$374,265,909,461</td>
+        </tr>
+        <tr>
+            <td>Solana</td>
+            <td>$107.91</td>
+            <td>$36,093,943,268</td>
+        </tr>
+    </table>
+{% endblock %}
