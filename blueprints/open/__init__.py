@@ -1,8 +1,9 @@
-from flask_login import login_user
-from passlib.hash import argon2
-from models import User
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import logout_user, login_required, current_user
+from flask_login import login_user
+from flask_login import logout_user, current_user
+from passlib.hash import argon2
+
+
 
 bp_open = Blueprint('bp_open', __name__)
 
@@ -50,11 +51,18 @@ def signup_get():
 
 @bp_open.post('/signup')
 def signup_post():
+    from models import User
+    from models import Wallet
+    from app import db
     name = request.form['name']
     email = request.form.get('email')
     password = request.form['password']
     hashed_password = argon2.using(rounds=10).hash(password)
     user = User.query.filter_by(email=email).first()
+    wallet = Wallet()
+    db.session.add(wallet)
+    db.session.commit()
+
     if user:
         flash("Email address is already in use")
         return redirect(url_for('bp_open.signup_get'))
@@ -67,14 +75,15 @@ def signup_post():
         flash("Please enter a password")
         return redirect(url_for('bp_open.signup_get'))
 
-    new_user = User(name=name, email=email, password=hashed_password)
-    from models import Wallet
-    wallet = Wallet(user_id=new_user.get_id())
-    new_user.wallet_id = wallet.id
+    # Create new user with name, email, password and wallet_id
+    new_user = User(name=name, email=email, password=hashed_password, wallet_id=wallet.id)
 
-    from app import db
-    db.session.add(new_user, wallet)
+    db.session.add(new_user)
     db.session.commit()
-    login_user(new_user)
+    # Link user id to new wallet
+    wallet.user_id = new_user.id
+    db.session.add(wallet)
+    db.session.commit()
+
 
     return redirect(url_for('bp_open.login_get'))

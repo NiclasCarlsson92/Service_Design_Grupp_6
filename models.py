@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(100))
     admin = db.Column(db.BOOLEAN, default=False)
     online = db.Column(db.BOOLEAN, default=False)
-
+    current_balance = db.Column(db.Integer, default=1000)
 
     def is_active(self):
         return True
@@ -27,8 +27,7 @@ class User(db.Model):
 
 class Wallet(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('wallet.id'), nullable=False)
-    current_balance = db.Column(db.Integer, default=1000)
+    user_id = db.Column(db.Integer, db.ForeignKey('wallet.id'), nullable=True)
     token_name = db.Column(db.String(150))
     token_amount = db.Column(db.Integer)
 
