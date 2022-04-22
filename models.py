@@ -4,13 +4,13 @@ from app import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id'), nullable=False)
+    wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id'), nullable=True)
     name = db.Column(db.String(150))
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(100))
     admin = db.Column(db.BOOLEAN, default=False)
     online = db.Column(db.BOOLEAN, default=False)
-
+    current_balance = db.Column(db.Integer, default=1000)
 
     def is_active(self):
         return True
@@ -27,8 +27,7 @@ class User(db.Model):
 
 class Wallet(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    current_balance = db.Column(db.Integer, default=1000)
+    user_id = db.Column(db.Integer, db.ForeignKey('wallet.id'), nullable=True)
     token_name = db.Column(db.String(150))
     token_amount = db.Column(db.Integer)
 
