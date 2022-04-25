@@ -14,20 +14,15 @@
     <br />
     <br />
     <br />
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification">
-                {{ messages [0] }}. Go to <a href="{{ url_for('bp_open.signup_get') }}">Sign up page</a>
-            </div>
-        {% endif %}
-    {% endwith %}
-    <form action="{{ url_for('bp_open.login_post')}}" method="POST" id="form1">
+    {% if current_user.is_authenticated %}
+
+     {% else %}
+     <form action="{{ url_for('bp_open.login_post')}}" method="POST" id="form1">
         <input class="signupLogin" type="email" name="email" placeholder="Email address" /> <br />
         <input class="signupLogin" type="password" name="password" placeholder="Password" /> <br />
         <br />
-    </form>
-        <button class="sbutton button2" onclick="{{ url_for('bp_open.login_get') }}">Back</button>
+     </form>
         <button class="sbutton button1" form="form1" value="submit">Log In</button>
-
+    {% endif %}
 
 {% endblock %}

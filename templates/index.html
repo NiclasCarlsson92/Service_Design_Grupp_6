@@ -7,30 +7,11 @@
 {% block content %}
     <body>
     {% if current_user.is_authenticated %}
-        <h1>Hello {{ current_user.name }}!</h1>
+        <h1>User: {{ current_user.name }}!</h1>
     {% else %}
         <h1>Hello stranger!</h1>
     {% endif %}
     <p>Welcome to the exchanger simulator</p>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <div class="center">
-        {% if current_user.is_authenticated %}
-            <button class="button button2" onclick="{{ url_for('bp_wallet.wallet_get') }}">Wallet</button>
-            <button class="button button3" onclick="{{ url_for('bp_open.logout_get') }}">Log out</button>
-        {% else %}
-            <button class="button button1" onclick="{{ url_for('bp_open.login_get')}}">Log In</button>
-            <button class="button button2" onclick="{{ url_for('bp_open.signup_get')}}">Sign In</button>
-        {% endif %}
-    </div>
     </body>
 {% endblock %}
 

@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+    {% if current_user.is_authenticated %}
+        <h1>User: {{ current_user.name }}</h1>
+    {% endif %}
     <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
     <br />
     <table class="center">
@@ -20,6 +23,15 @@
 
            {% endfor %}
     </table>
+    <br/>
+    <br/>
+    <a class="your-balance">
+        Your balance: {{ current_user.current_balance }}$
+    </a>
+    <button class="sbutton button1" form="form1" value="submit">Buy Crypto</button>
+    <button class="sbutton button3" form="form1" value="submit">Sell Crypto</button>
+
+
 {% endblock %}
 
 {% block scripts %}
