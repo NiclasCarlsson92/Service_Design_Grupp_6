@@ -49,6 +49,8 @@ def wallet_buy():
     from models import Wallet
 
     wallet = get_user_wallet(user.id)
+    user.current_balance = user.current_balance - amount
+
 
     return Response()
 
