@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, Response
 from flask_login import logout_user, login_required, current_user
 from blueprints.api import api_get
-
+from controllers.wallet_controller import get_user_wallet
 
 bp_wallet = Blueprint('bp_wallet', __name__)
 
@@ -32,3 +32,31 @@ def wallet_get():
     db.session.commit()
 
     return render_template('wallet.html', user=user, activity=activity, cryptos=cryptos)
+
+
+@bp_wallet.put('/api/v.1/buy')
+def wallet_buy():
+    from models import APILogs
+    data = request.get_json(force=True)
+    print(data)
+    token_usd = api_get(dict=True)
+    crypto = data["crypto"]
+    amount = data["amount"]
+    user = current_user
+    user_activity = "Buying crypto"
+    activity = APILogs(activity=user_activity)
+
+    from models import Wallet
+
+    wallet = get_user_wallet(user.id)
+
+    return Response()
+
+
+@bp_wallet.get("/buy")
+@login_required
+def wallet_get_buy():
+    user = current_user
+    wallet = get_user_wallet(user.id)
+    cryptos = api_get(dict=True)
+    return render_template("buy_crypto.html", user=user, wallet=wallet, cryptos=cryptos)
