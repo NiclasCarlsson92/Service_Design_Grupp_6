@@ -30,7 +30,7 @@ def login_post():
 
     from app import db
     db.session.commit()
-    return render_template('index.html')
+    return redirect(url_for('bp_wallet.wallet_get'))
 
 
 @bp_open.get('/logout')
@@ -85,4 +85,4 @@ def signup_post():
     db.session.commit()
     login_user(new_user)
 
-    return redirect(url_for('bp_open.login_get'))
+    return redirect(url_for('bp_wallet.wallet_get'))
