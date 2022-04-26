@@ -14,11 +14,13 @@
         <tr>
             <th>Name</th>
             <th>Price</th>
+            <th>Held</th>
         </tr>
            {% for key, value in cryptos.items() %}
                <tr>
                 <td>{{key}}</td>
                 <td id="{{ key }}">{{value}}</td>
+                <td>{{wallet[key]}}</td>
                </tr>
 
            {% endfor %}
