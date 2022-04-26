@@ -36,6 +36,9 @@ class Wallet(db.Model):
     bnb = db.Column(db.Float, default=0)
     usdc = db.Column(db.Float, default=0)
 
+    def get_cryptos(self):
+        return {"BTC": self.btc, "ETH": self.eth, "USDT": self.usdt, "BNB": self.bnb, "USDC": self.usdc}
+
 
 class TransactionHistory(db.Model):
     __tablename__ = "transaction_history"
