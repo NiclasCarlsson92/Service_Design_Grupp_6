@@ -15,3 +15,9 @@ def get_user_balance():
 def get_user_wallet(user_id):
     from models import Wallet
     return Wallet.query.filter(Wallet.user_id == user_id).first()
+
+
+def get_all_cryptos(wallet_id):
+    from models import Wallet
+    # cryptos = []
+    return Wallet.query(Wallet.btc, Wallet.eth, Wallet.usdt, Wallet.bnb, Wallet.usdc).filter_by(id=wallet_id)

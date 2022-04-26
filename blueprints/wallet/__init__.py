@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, Response
 from flask_login import logout_user, login_required, current_user
+
 from blueprints.api import api_get
 from controllers.wallet_controller import get_user_wallet
 
@@ -37,23 +38,152 @@ def wallet_get():
 @bp_wallet.put('/api/v.1/buy')
 def wallet_buy():
     from models import APILogs
+    from app import db
     data = request.get_json(force=True)
     print(data)
+    crypto = data["crypto"]
+    amount = data["amount"]
+    amount = float(amount)
+    user = current_user
+    if user.current_balance - amount < 0:
+        user_activity = "Invalid balance"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(activity)
+        db.session.commit()
+        return Response(status=400)
+
     token_usd = api_get(dict=True)
+    token_usd = token_usd[crypto]
+
+    from models import Wallet
+    wallet = get_user_wallet(user.id)
+    test = get_user_wallet(wallet.id)
+    print(test)
+    user.current_balance = user.current_balance - amount
+    user_activity = "Buying crypto"
+    activity = APILogs(activity=user_activity, user_id=user.id)
+    # There must be a better way of doing this...
+    if crypto == "BTC":
+        bought_tokens = amount / token_usd
+        wallet.btc = wallet.btc + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "ETH":
+        bought_tokens = amount / token_usd
+        wallet.eth = wallet.eth + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "USDT":
+        bought_tokens = amount / token_usd
+        wallet.usdt = wallet.usdt + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "BNB":
+        bought_tokens = amount / token_usd
+        wallet.bnb = wallet.bnb + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "USCD":
+        bought_tokens = amount / token_usd
+        wallet.usdc = wallet.usdc + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    user_activity = "Error user could not buy crypto"
+    activity = APILogs(activity=user_activity, user_id=user.id)
+    db.session.add(activity)
+    db.session.commit()
+    return Response(status=400)
+
+
+@bp_wallet.put('/api/v.1/sell')
+def wallet_sell():
+    from models import APILogs
+    from app import db
+    from models import Wallet
+    data = request.get_json(force=True)
+    print(data)
     crypto = data["crypto"]
     amount = data["amount"]
     user = current_user
-    user_activity = "Buying crypto"
-    activity = APILogs(activity=user_activity)
-
-    from models import Wallet
-
     wallet = get_user_wallet(user.id)
-    user.current_balance = user.current_balance - amount
+    # Do this bit for crypto
+    test = get_user_wallet(wallet.id)
+    print(test)
+    if user.current_balance - amount < 0:
+        user_activity = "Invalid crypto balance"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(activity)
+        db.session.commit()
+        return Response(status=400)
+
+    token_usd = api_get(dict=True)
+    token_usd = token_usd[crypto]
+    amount = float(amount)
 
 
-    return Response()
+    user_activity = "Selling crypto"
+    activity = APILogs(activity=user_activity, user_id=user.id)
+    # There must be a better way of doing this...
+    if crypto == "BTC":
+        bought_tokens = amount / token_usd
+        wallet.btc = wallet.btc + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
 
+    if crypto == "ETH":
+        bought_tokens = amount / token_usd
+        wallet.eth = wallet.eth + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "USDT":
+        bought_tokens = amount / token_usd
+        wallet.usdt = wallet.usdt + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "BNB":
+        bought_tokens = amount / token_usd
+        wallet.bnb = wallet.bnb + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    if crypto == "USCD":
+        bought_tokens = amount / token_usd
+        wallet.usdc = wallet.usdc + bought_tokens
+        db.session.add(user, wallet)
+        db.session.add(activity)
+        db.session.commit()
+        return Response()
+
+    user_activity = "Error user could not sell crypto"
+    activity = APILogs(activity=user_activity, user_id=user.id)
+    db.session.add(activity)
+    db.session.commit()
+    return Response(status=400)
 
 @bp_wallet.get("/buy")
 @login_required

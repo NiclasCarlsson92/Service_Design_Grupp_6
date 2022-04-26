@@ -30,11 +30,11 @@ class Wallet(db.Model):
     __tablename__ = "wallet"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    btc = db.Column(db.Float)
-    eth = db.Column(db.Float)
-    usdt = db.Column(db.Float)
-    bnb = db.Column(db.Float)
-    usdc = db.Column(db.Float)
+    btc = db.Column(db.Float, default=0)
+    eth = db.Column(db.Float, default=0)
+    usdt = db.Column(db.Float, default=0)
+    bnb = db.Column(db.Float, default=0)
+    usdc = db.Column(db.Float, default=0)
 
 
 class TransactionHistory(db.Model):
