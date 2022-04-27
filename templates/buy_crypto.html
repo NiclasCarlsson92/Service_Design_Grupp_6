@@ -8,6 +8,7 @@
     {% if current_user.is_authenticated %}
         <h1>User: {{ current_user.name }}</h1>
     {% endif %}
+    <input type="hidden" id="userData" value="{{ current_user.id }}">
     <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
     <br />
     <table class="center">
@@ -20,14 +21,14 @@
                <tr>
                 <td>{{key}}</td>
                 <td id="{{ key }}">{{value}}</td>
-                <td>{{wallet[key]}}</td>
+                <td id="{{ key }} wallet">{{wallet[key]}}</td>
                </tr>
 
            {% endfor %}
     </table>
     <br/>
     <br/>
-    <a class="your-balance">
+    <a id="balance" class="your-balance">
         Your balance: {{ current_user.current_balance }}$
     </a>
     <form>
@@ -46,9 +47,32 @@
 
 {% block scripts %}
  <script>
-        setInterval(checkMessages, 15000);
+        setInterval(updateCrypto, 15000);
 
-        function checkMessages() {
+        function updateUserWallet() {
+            let userData = {};
+            userData.user = document.getElementById("userData").value;
+            fetch("http://127.0.0.1:5000/api/v.1/get_user_crypto?id=" + userData["user"], {
+                method: "GET"
+                })
+            .then(response => response.json())
+            .then(crypto => {
+                let btc = crypto.BTC;
+                let eth = crypto.ETH;
+                let usdt = crypto.USDT;
+                let bnb = crypto.BNB;
+                let usdc = crypto.USDC;
+                let balance = crypto.userBalance
+                document.getElementById("BTC wallet").innerHTML = btc;
+                document.getElementById("ETH wallet").innerHTML = eth;
+                document.getElementById("USDT wallet").innerHTML = usdt;
+                document.getElementById("BNB wallet").innerHTML = bnb;
+                document.getElementById("USDC wallet").innerHTML = usdc;
+                document.getElementById("balance").innerText = "Your balance: " + balance;
+                });}
+
+
+        function updateCrypto() {
             fetch("http://127.0.0.1:5000/api/v.1/cryptousd")
             .then(response => response.json())
             .then(crypto => {
@@ -75,6 +99,8 @@
         fetch("http://127.0.0.1:5000/api/v.1/buy", {
             method: 'PUT',
             body: JSON.stringify(value)})
+
+        setTimeout(updateUserWallet, 1500)
       }
       const form = document.querySelector('form');
       form.addEventListener('submit', handleSubmit);

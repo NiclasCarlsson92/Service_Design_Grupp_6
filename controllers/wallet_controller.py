@@ -19,5 +19,4 @@ def get_user_wallet(user_id):
 
 def get_all_cryptos(wallet_id):
     from models import Wallet
-    # cryptos = []
     return Wallet.filter_by(id=wallet_id).query(Wallet.btc, Wallet.eth, Wallet.usdt, Wallet.bnb, Wallet.usdc)

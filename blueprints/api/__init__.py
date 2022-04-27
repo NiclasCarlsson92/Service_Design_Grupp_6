@@ -1,9 +1,9 @@
 import json
-
+from controllers.wallet_controller import get_user_wallet
 import requests
-from flask import Blueprint, Response
-from flask_login import login_required
-
+from flask import Blueprint, Response, request
+from flask_login import login_required, current_user
+from controllers.user_controller import get_user_by_id
 bp_api = Blueprint('bp_api', __name__)
 
 
@@ -37,4 +37,18 @@ def api_get(**kwargs):
     if kwargs is not None:
         return crypto
 
+    return Response(json.dumps(crypto), 200, content_type="application/json")
+
+
+@bp_api.get("/api/v.1/get_user_crypto")
+@login_required
+def get_all_cryptos():
+    from models import Wallet
+    # data = request.get_json(force=True)
+    user_id = request.args.get("id")
+    user = get_user_by_id(user_id)
+    print(user_id)
+    wallet = get_user_wallet(user_id)
+    crypto = wallet.get_cryptos()
+    crypto["userBalance"] = user.current_balance
     return Response(json.dumps(crypto), 200, content_type="application/json")

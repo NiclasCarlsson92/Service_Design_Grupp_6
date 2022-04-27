@@ -48,6 +48,7 @@ class TransactionHistory(db.Model):
     token_name = db.Column(db.String(150))
     token_amount = db.Column(db.Float)
     time = db.Column(db.DateTime, default=datetime.datetime.now())
+    action = db.Column(db.String(150))
 
 
 class APILogs(db.Model):
