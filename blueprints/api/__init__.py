@@ -1,11 +1,16 @@
 import json
-from controllers.wallet_controller import get_user_wallet
+import os
 import requests
+from dotenv import load_dotenv
 from flask import Blueprint, Response, request
 from flask_login import login_required, current_user
 from controllers.user_controller import get_user_by_id
-bp_api = Blueprint('bp_api', __name__)
+from controllers.wallet_controller import get_user_wallet
+load_dotenv()
 
+
+bp_api = Blueprint('bp_api', __name__)
+API_KEY = os.getenv('API_KEY')
 
 @bp_api.get("/api/v.1/cryptousd")
 @login_required
@@ -15,7 +20,8 @@ def api_get(**kwargs):
     headers = {
         'Accepts': 'application/json',
         # API Key is linked to an account created by estani
-        'X-CMC_PRO_API_KEY': '12c385ec-6a53-458e-b418-d4a987d2e3a5',
+        'X-CMC_PRO_API_KEY': API_KEY
+
     }
     params = {
         'start': '1',
