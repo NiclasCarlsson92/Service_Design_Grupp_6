@@ -2,6 +2,7 @@ import dotenv
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api
 
 db = SQLAlchemy()
 
@@ -12,6 +13,9 @@ def create_app():
     app.config['SECRET_KEY'] = '123secret'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+
+    api = Api(app)
+
 
     db.init_app(app)
 
@@ -31,6 +35,9 @@ def create_app():
 
     from blueprints.admin import bp_admin
     app.register_blueprint(bp_admin)
+
+    from blueprints.api import bp_api
+    app.register_blueprint(bp_api)
 
     return app
 

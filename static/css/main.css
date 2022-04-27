@@ -9,7 +9,7 @@
        }
 
         .menu-item {
-            margin: 5px;
+            margin-left: 1800px;
             color: black;
             font-size: 25px;
         }
@@ -42,7 +42,7 @@ hr {
 .bottom {
    position: absolute;
    bottom: 20px;
-   margin-left: 200px;
+   margin-left: 400px;
 }
 
  table{

@@ -3,8 +3,6 @@ from flask_login import login_user
 from flask_login import logout_user, current_user
 from passlib.hash import argon2
 
-
-
 bp_open = Blueprint('bp_open', __name__)
 
 
@@ -15,6 +13,7 @@ def login_get():
 
 @bp_open.post('/login')
 def login_post():
+    from models import User
     email = request.form['email']
     password = request.form['password']
     user = User.query.filter_by(email=email).first()
@@ -31,7 +30,7 @@ def login_post():
 
     from app import db
     db.session.commit()
-    return render_template('index.html')
+    return redirect(url_for('bp_wallet.wallet_get'))
 
 
 @bp_open.get('/logout')
@@ -41,7 +40,7 @@ def logout_get():
     from app import db
     db.session.commit()
     logout_user()
-    return redirect(url_for('bp_open.index_get'))
+    return redirect(url_for('bp_open.login_get'))
 
 
 @bp_open.get('/signup')
@@ -77,13 +76,13 @@ def signup_post():
 
     # Create new user with name, email, password and wallet_id
     new_user = User(name=name, email=email, password=hashed_password, wallet_id=wallet.id)
-
     db.session.add(new_user)
     db.session.commit()
+
     # Link user id to new wallet
     wallet.user_id = new_user.id
     db.session.add(wallet)
     db.session.commit()
+    login_user(new_user)
 
-
-    return redirect(url_for('bp_open.login_get'))
+    return redirect(url_for('bp_wallet.wallet_get'))

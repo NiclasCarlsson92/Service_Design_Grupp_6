@@ -1,7 +1,7 @@
 {% extends "base-template.html" %}
 
 {% block title %}
-    Main page
+    Dashboard
 {% endblock %}
 
 {% block content %}
@@ -14,11 +14,13 @@
         <tr>
             <th>Name</th>
             <th>Price</th>
+            <th>Held</th>
         </tr>
            {% for key, value in cryptos.items() %}
                <tr>
                 <td>{{key}}</td>
                 <td id="{{ key }}">{{value}}</td>
+                <td>{{wallet[key]}}</td>
                </tr>
 
            {% endfor %}
@@ -28,8 +30,16 @@
     <a class="your-balance">
         Your balance: {{ current_user.current_balance }}$
     </a>
-    <button class="sbutton button1" onclick="location.href='{{ url_for('bp_wallet.wallet_get_buy') }}'">Buy Crypto</button>
-    <button class="sbutton button3" onclick="location.href='{{ url_for('bp_wallet.wallet_get_sell') }}'">Sell Crypto</button>
+    <form>
+        <label for="crypto">Crypto</label>
+        <input type="text" name="crypto" id="crypto">
+
+        <label for="amount">Amount USD</label>
+        <input type="text" name="amount" id="amount">
+
+        <button class="sbutton button1" type="submit">Buy</button>
+    </form>
+
 
 
 {% endblock %}
@@ -54,5 +64,22 @@
                 document.getElementById("USDC").innerHTML = usdc;
             });
         }
+        function handleSubmit(event) {
+        event.preventDefault();
+
+        const data = new FormData(event.target);
+
+        const value = Object.fromEntries(data.entries());
+
+        // console.log({ value });
+        fetch("http://127.0.0.1:5000/api/v.1/buy", {
+            method: 'PUT',
+            body: JSON.stringify(value)})
+      }
+      const form = document.querySelector('form');
+      form.addEventListener('submit', handleSubmit);
+
+
+
     </script>
 {% endblock %}

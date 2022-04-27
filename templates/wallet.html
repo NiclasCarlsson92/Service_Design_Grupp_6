@@ -1,35 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+{% extends "base-template.html" %}
 
-</head>
-<body>
-<div class="menu">
-    <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
-        Home
-    </a>
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
     {% if current_user.is_authenticated %}
-
-        <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get') }}">
-            Wallet
-        </a>
-        <a href="{{ url_for('bp_wallet.wallet_get') }}">
-            <i class="fa fa-fw fa-envelop-open no-new-msg" id="message-symbol"></i>
-                <span class="sup" id="message-cont"></span>
-        </a>
+        <h1>User: {{ current_user.name }}</h1>
     {% endif %}
-</div>
-    <hr />
-    {% block content %}
-    {% endblock %}
+    <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
+    <br />
+    <table class="center">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+           {% for key, value in cryptos.items() %}
+               <tr>
+                <td>{{key}}</td>
+                <td id="{{ key }}">{{value}}</td>
+               </tr>
+
+           {% endfor %}
+    </table>
+    <br/>
+    <br/>
+    <a class="your-balance">
+        Your balance: {{ current_user.current_balance }}$
+    </a>
+    <button class="sbutton button1" onclick="location.href='{{ url_for('bp_wallet.wallet_get_buy') }}'">Buy Crypto</button>
+    <button class="sbutton button3" onclick="location.href='{{ url_for('bp_wallet.wallet_get_sell') }}'">Sell Crypto</button>
 
 
+{% endblock %}
 
-    {% block scripts %}
-    {% endblock %}
-    <a class="bottom" href="https://kyh.se/utbildningar/internet-of-things-developer/" >This is a crypto-exchanger simulator developed by a bunch of students of IoT Developer at KYH.</a>
-</body>
-</html>
+{% block scripts %}
+ <script>
+        setInterval(checkMessages, 15000);
+
+        function checkMessages() {
+            fetch("http://127.0.0.1:5010/api/v.1/cryptousd")
+            .then(response => response.json())
+            .then(crypto => {
+                let btc = crypto.BTC;
+                let eth = crypto.ETH;
+                let usdt = crypto.USDT;
+                let bnb = crypto.BNB;
+                let usdc = crypto.USDC;
+                document.getElementById("BTC").innerHTML = btc;
+                document.getElementById("ETH").innerHTML = eth;
+                document.getElementById("USDT").innerHTML = usdt;
+                document.getElementById("BNB").innerHTML = bnb;
+                document.getElementById("USDC").innerHTML = usdc;
+            });
+        }
+    </script>
+{% endblock %}
