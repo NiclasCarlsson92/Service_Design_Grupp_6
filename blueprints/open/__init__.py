@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_user
-from flask_login import logout_user, current_user
+from flask_login import logout_user, current_user, login_user
 from passlib.hash import argon2
 import uuid
 

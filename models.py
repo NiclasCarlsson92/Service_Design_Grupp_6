@@ -45,9 +45,9 @@ class TransactionHistory(db.Model):
     __tablename__ = "transaction_history"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id'), nullable=False)
-    amount_usd = db.Column(db.Float)
+    amount_usd = db.Column(db.Float, default=0)
     token_name = db.Column(db.String(150))
-    token_amount = db.Column(db.Float)
+    token_amount = db.Column(db.Float, default=0)
     time = db.Column(db.DateTime, default=datetime.datetime.now())
     action = db.Column(db.String(150))
 
