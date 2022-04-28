@@ -6,6 +6,7 @@
 
 {% block content %}
     {% if current_user.is_authenticated %}
+
         <h1>User: {{ current_user.name }}</h1>
     {% endif %}
     <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>

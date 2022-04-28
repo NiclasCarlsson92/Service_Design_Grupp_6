@@ -4,6 +4,7 @@ from flask_login import logout_user, current_user
 from passlib.hash import argon2
 import uuid
 
+
 bp_open = Blueprint('bp_open', __name__)
 
 

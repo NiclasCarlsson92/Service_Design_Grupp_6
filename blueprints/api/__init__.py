@@ -1,13 +1,18 @@
-import os
 import json
+import os
 import math
-from dotenv import load_dotenv
 import requests
-from flask import Blueprint, Response
-from flask_login import login_required
-
+from dotenv import load_dotenv
+from flask import Blueprint, Response, request
+from flask_login import login_required, current_user
+from controllers.user_controller import get_user_by_id
+from controllers.wallet_controller import get_user_wallet
 bp_api = Blueprint('bp_api', __name__)
 load_dotenv()
+
+
+bp_api = Blueprint('bp_api', __name__)
+
 API_KEY = os.getenv('API_KEY')
 
 @bp_api.get("/api/v.1/cryptousd")
@@ -18,7 +23,9 @@ def api_get(**kwargs):
     headers = {
         'Accepts': 'application/json',
         # API Key is linked to an account created by estani
-        'X-CMC_PRO_API_KEY': '12c385ec-6a53-458e-b418-d4a987d2e3a5'
+
+        'X-CMC_PRO_API_KEY': API_KEY
+
 
     }
     params = {
@@ -41,4 +48,18 @@ def api_get(**kwargs):
     if kwargs is not None:
         return crypto
 
+    return Response(json.dumps(crypto), 200, content_type="application/json")
+
+
+@bp_api.get("/api/v.1/get_user_crypto")
+@login_required
+def get_all_cryptos():
+    from models import Wallet
+    # data = request.get_json(force=True)
+    user_id = request.args.get("id")
+    user = get_user_by_id(user_id)
+    print(user_id)
+    wallet = get_user_wallet(user_id)
+    crypto = wallet.get_cryptos()
+    crypto["userBalance"] = user.current_balance
     return Response(json.dumps(crypto), 200, content_type="application/json")

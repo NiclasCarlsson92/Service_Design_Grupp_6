@@ -10,12 +10,24 @@
 <div class="menu">
 
     {% if current_user.is_authenticated %}
+
+        <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get') }}">
+            Wallet
+        </a>
         <a class="menu-item" href="{{ url_for('bp_open.logout_get') }}">
             Logout
         </a>
+        <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
+            Home
+        </a>
+
     {% else %}
         <a class="menu-item" href ={{ url_for('bp_open.signup_get') }}>
             Sign up
+        </a>
+        <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
+            Home
+
         </a>
     {% endif %}
 </div>

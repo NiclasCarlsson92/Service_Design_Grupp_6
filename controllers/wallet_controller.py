@@ -5,6 +5,7 @@ def get_user_balance():
     return current_user.current_balance
 
 
+  
 def get_user_wallet(user_id):
     from models import Wallet
     return Wallet.query.filter(Wallet.user_id == user_id).first()
