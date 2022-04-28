@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user
 from flask_login import logout_user, current_user
 from passlib.hash import argon2
+import uuid
 
 bp_open = Blueprint('bp_open', __name__)
 
@@ -57,6 +58,7 @@ def signup_post():
     email = request.form.get('email')
     password = request.form['password']
     hashed_password = argon2.using(rounds=10).hash(password)
+    api_token = uuid.uuid1().hex
     user = User.query.filter_by(email=email).first()
     wallet = Wallet()
     db.session.add(wallet)
@@ -75,7 +77,7 @@ def signup_post():
         return redirect(url_for('bp_open.signup_get'))
 
     # Create new user with name, email, password and wallet_id
-    new_user = User(name=name, email=email, password=hashed_password, wallet_id=wallet.id)
+    new_user = User(name=name, email=email, password=hashed_password, api_token=api_token, wallet_id=wallet.id)
     db.session.add(new_user)
     db.session.commit()
 

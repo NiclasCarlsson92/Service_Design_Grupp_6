@@ -9,6 +9,7 @@ class User(db.Model):
     name = db.Column(db.String(150))
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(100))
+    api_token = db.Column(db.String(50))
     admin = db.Column(db.BOOLEAN, default=False)
     online = db.Column(db.BOOLEAN, default=False)
     current_balance = db.Column(db.Float, default=1000)
@@ -48,6 +49,7 @@ class TransactionHistory(db.Model):
     token_name = db.Column(db.String(150))
     token_amount = db.Column(db.Float)
     time = db.Column(db.DateTime, default=datetime.datetime.now())
+    action = db.Column(db.String(150))
 
 
 class APILogs(db.Model):
