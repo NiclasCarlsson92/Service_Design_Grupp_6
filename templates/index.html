@@ -5,17 +5,55 @@
 {% endblock %}
 
 {% block content %}
-    <body>
     {% if current_user.is_authenticated %}
-        <h1>User: {{ current_user.name }}!</h1>
-    {% else %}
-        <h1>Hello stranger!</h1>
+
+        <h1>User: {{ current_user.name }}</h1>
     {% endif %}
-    <p>Welcome to the exchanger simulator</p>
-    </body>
+    <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
+    <br />
+    <table class="center">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+           {% for key, value in cryptos.items() %}
+               <tr>
+                <td>{{key}}</td>
+                <td id="{{ key }}">{{value}}</td>
+               </tr>
+
+           {% endfor %}
+    </table>
+    <br/>
+    <br/>
+    <a class="your-balance">
+        Your balance: {{ current_user.current_balance }}$
+    </a>
+    <button class="sbutton button1" onclick="location.href='{{ url_for('bp_wallet.wallet_get_buy') }}'">Buy Crypto</button>
+    <button class="sbutton button3" onclick="location.href='{{ url_for('bp_wallet.wallet_get_sell') }}'">Sell Crypto</button>
+
+
 {% endblock %}
 
 {% block scripts %}
+ <script>
+        setInterval(checkMessages, 15000);
 
-
+        function checkMessages() {
+            fetch("http://127.0.0.1:5000/api/v.1/cryptousd")
+            .then(response => response.json())
+            .then(crypto => {
+                let btc = crypto.BTC;
+                let eth = crypto.ETH;
+                let usdt = crypto.USDT;
+                let bnb = crypto.BNB;
+                let usdc = crypto.USDC;
+                document.getElementById("BTC").innerHTML = btc;
+                document.getElementById("ETH").innerHTML = eth;
+                document.getElementById("USDT").innerHTML = usdt;
+                document.getElementById("BNB").innerHTML = bnb;
+                document.getElementById("USDC").innerHTML = usdc;
+            });
+        }
+    </script>
 {% endblock %}

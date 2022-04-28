@@ -8,6 +8,7 @@
     {% if current_user.is_authenticated %}
         <h1>User: {{ current_user.name }}</h1>
     {% endif %}
+
     <input type="hidden" id="userData" value="{{ current_user.id }}">
     <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
     <br />
@@ -22,11 +23,13 @@
                 <td>{{key}}</td>
                 <td id="{{ key }}">{{value}}</td>
                 <td id="{{ key }} wallet">{{wallet[key]}}</td>
+
                </tr>
             {% endfor %}
     </table>
     <br/>
     <br/>
+
     <a id="balance" class="your-balance">
         Your balance: {{ current_user.current_balance }}$
     </a>
@@ -73,6 +76,7 @@
 
         function updateCrypto() {
             fetch("http://127.0.0.1:5000/api/v.1/cryptousd")
+
             .then(response => response.json())
             .then(crypto => {
                 let btc = crypto.BTC;
@@ -88,6 +92,7 @@
             });
         }
         function handleSubmit(event) {
+
         event.preventDefault();
 
         const data = new FormData(event.target);
@@ -104,8 +109,6 @@
 
       const form = document.querySelector('form');
       form.addEventListener('submit', handleSubmit);
-
-
 
     </script>
 {% endblock %}

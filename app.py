@@ -2,16 +2,25 @@ import dotenv
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api
+
 
 db = SQLAlchemy()
 
 
 def create_app():
 
+    # Create a Flask application
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '123secret'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+
+    # Create an API instance
+    api = Api(app)
+    from resources import api_user, api_wallet
+    api.add_resource(api_wallet.Wallet, "/api/v1.0/wallet/<string:token>")
+    api.add_resource(api_user.Client, "/api/v1.0/client/<string:token>")
 
     db.init_app(app)
 

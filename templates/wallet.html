@@ -28,13 +28,10 @@
     <a class="your-balance">
         Your balance: {{ current_user.current_balance }}$
     </a>
-    <button class="sbutton button1" form="form1" value="submit">Buy Crypto</button>
-    <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get_buy') }}">
-        Temp buy
-    </a>
-    <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get_sell') }}">
-        Temp sell
-    <button class="sbutton button3" form="form1" value="submit">Sell Crypto</button>
+
+    <button class="sbutton button1" onclick="location.href='{{ url_for('bp_wallet.wallet_get_buy') }}'">Buy Crypto</button>
+    <button class="sbutton button3" onclick="location.href='{{ url_for('bp_wallet.wallet_get_sell') }}'">Sell Crypto</button>
+
 
 
 {% endblock %}
@@ -44,7 +41,9 @@
         setInterval(checkMessages, 15000);
 
         function checkMessages() {
+
             fetch("http://127.0.0.1:5000/api/v.1/cryptousd")
+
             .then(response => response.json())
             .then(crypto => {
                 let btc = crypto.BTC;

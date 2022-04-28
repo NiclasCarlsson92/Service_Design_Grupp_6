@@ -10,6 +10,7 @@
 <div class="menu">
 
     {% if current_user.is_authenticated %}
+
         <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get') }}">
             Wallet
         </a>
@@ -26,6 +27,7 @@
         </a>
         <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
             Home
+
         </a>
     {% endif %}
 </div>
@@ -35,6 +37,6 @@
     {% endblock %}
     {% block scripts %}
     {% endblock %}
-    <a class="bottom" href="https://kyh.se/utbildningar/internet-of-things-developer/" >This is a crypto-exchanger simulator developed by a bunch of students of IoT Developer at KYH.</a>
+    <a class="bottom" href="https://kyh.se/utbildningar/internet-of-things-developer/" >Developed by a bunch of students of IoT Developer at KYH.</a>
 </body>
 </html>

@@ -57,18 +57,22 @@ def wallet_buy():
         return Response(status=400)
 
     token_usd = api_get(dict=True)
-    token_usd = token_usd[crypto]
+
+    token_usd = token_usd[crypto.upper()]
+
 
     wallet = get_user_wallet(user.id)
     user.current_balance = user.current_balance - amount
     bought_tokens = amount / token_usd
     user_activity = "Buying crypto"
+
+    token_name = f'${crypto.upper()}'
     activity = APILogs(activity=user_activity, user_id=user.id)
     # There must be a better way of doing this...
-    if crypto == "BTC":
-        wallet.btc = wallet.btc + bought_tokens
-        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name="$BTC",
-                                         token_amount=bought_tokens, action="Buy")
+    if crypto is not None:
+        wallet.btc = getattr(wallet, crypto.lower()) + bought_tokens
+        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name=token_name, token_amount=bought_tokens, action="Buy")
+
         db.session.add(user)
         db.session.add(wallet)
         db.session.add(activity)
@@ -76,55 +80,12 @@ def wallet_buy():
         db.session.commit()
         return Response()
 
-    if crypto == "ETH":
-        wallet.eth = wallet.eth + bought_tokens
-        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name="$ETH",
-                                         token_amount=bought_tokens, action="Buy")
-        db.session.add(user)
-        db.session.add(wallet)
+    else:
+        user_activity = "Error user could not buy crypto"
+        activity = APILogs(activity=user_activity, user_id=user.id)
         db.session.add(activity)
-        db.session.add(transaction)
         db.session.commit()
-        return Response()
-
-    if crypto == "USDT":
-        wallet.usdt = wallet.usdt + bought_tokens
-        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name="$USDT",
-                                         token_amount=bought_tokens, action="Buy")
-        db.session.add(user)
-        db.session.add(wallet)
-        db.session.add(activity)
-        db.session.add(transaction)
-        db.session.commit()
-        return Response()
-
-    if crypto == "BNB":
-        wallet.bnb = wallet.bnb + bought_tokens
-        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name="$BNB",
-                                         token_amount=bought_tokens, action="Buy")
-        db.session.add(user)
-        db.session.add(wallet)
-        db.session.add(activity)
-        db.session.add(transaction)
-        db.session.commit()
-        return Response()
-
-    if crypto == "USDC":
-        wallet.usdc = wallet.usdc + bought_tokens
-        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name="$USDC",
-                                         token_amount=bought_tokens, action="Buy")
-        db.session.add(user)
-        db.session.add(wallet)
-        db.session.add(activity)
-        db.session.add(transaction)
-        db.session.commit()
-        return Response()
-
-    user_activity = "Error user could not buy crypto"
-    activity = APILogs(activity=user_activity, user_id=user.id)
-    db.session.add(activity)
-    db.session.commit()
-    return Response(status=400)
+        return Response(status=400)
 
 
 @bp_wallet.put('/api/v.1/sell')

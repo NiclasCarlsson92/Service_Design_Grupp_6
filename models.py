@@ -9,6 +9,7 @@ class User(db.Model):
     name = db.Column(db.String(150))
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(100))
+    api_token = db.Column(db.String(50))
     admin = db.Column(db.BOOLEAN, default=False)
     online = db.Column(db.BOOLEAN, default=False)
     current_balance = db.Column(db.Float, default=1000)
