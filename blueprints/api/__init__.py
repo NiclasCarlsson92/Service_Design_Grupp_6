@@ -7,7 +7,6 @@ from flask import Blueprint, Response, request
 from flask_login import login_required, current_user
 from controllers.user_controller import get_user_by_id
 from controllers.wallet_controller import get_user_wallet
-bp_api = Blueprint('bp_api', __name__)
 load_dotenv()
 
 
