@@ -4,7 +4,6 @@ from flask_login import current_user
 def get_user_balance():
     return current_user.current_balance
 
-
   
 def get_user_wallet(user_id):
     from models import Wallet
@@ -18,7 +17,7 @@ def get_all_cryptos(wallet_id):
 
 def wallet_buy(crypto, amount, wallet, user):
     from app import db
-    from models import APILogs
+    from models import APILogs, Wallet
     from blueprints.api import api_get
     from models import TransactionHistory
 
@@ -36,12 +35,15 @@ def wallet_buy(crypto, amount, wallet, user):
         return "status=400"
 
     if crypto is not None:
-        wallet = getattr(wallet, crypto.lower()) + bought_tokens
+        crypto = crypto.lower()
+        wallet = Wallet.query.filter_by(id=wallet.id).first()
+        wallet.set_currency(crypto, bought_tokens)
+        db.session.commit()
         transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name=token_name, token_amount=bought_tokens, action="Buy")
         user_activity = "Buying crypto"
         activity = APILogs(activity=user_activity, user_id=user.id)
         db.session.add(user)
-        db.session.add(wallet)
+        #db.session.add(wallet)
         db.session.add(activity)
         db.session.add(transaction)
         db.session.commit()

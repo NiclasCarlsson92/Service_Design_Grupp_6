@@ -1,6 +1,5 @@
 import json
 import os
-import math
 import requests
 from dotenv import load_dotenv
 from flask import Blueprint, Response, request
@@ -16,7 +15,7 @@ bp_api = Blueprint('bp_api', __name__)
 API_KEY = os.getenv('API_KEY')
 
 @bp_api.get("/api/v.1/cryptousd")
-@login_required
+#@login_required
 def api_get(**kwargs):
     # This example uses Python 2.7 and the python-request library.
 
@@ -52,7 +51,7 @@ def api_get(**kwargs):
 
 
 @bp_api.get("/api/v.1/get_user_crypto")
-@login_required
+#@login_required
 def get_all_cryptos():
     from models import Wallet
     # data = request.get_json(force=True)

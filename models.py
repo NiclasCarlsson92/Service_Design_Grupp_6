@@ -40,6 +40,18 @@ class Wallet(db.Model):
     def get_cryptos(self):
         return {"BTC": self.btc, "ETH": self.eth, "USDT": self.usdt, "BNB": self.bnb, "USDC": self.usdc}
 
+    def set_currency(self, currency, amount):
+        if currency == "btc":
+            self.btc = self.btc + amount
+        elif currency == "eth":
+            self.eth = self.eth + amount
+        elif currency == "usdt":
+            self.usdt = self.usdt + amount
+        elif currency == "bnb":
+            self.bnb = self.bnb + amount
+        else:
+            self.usdc = self.usdc + amount
+
 
 class TransactionHistory(db.Model):
     __tablename__ = "transaction_history"
