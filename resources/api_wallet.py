@@ -1,6 +1,6 @@
 import json
 from flask import Response, request
-from models import User, Wallet
+from models import User
 from flask_restful import Resource
 from resources.verify_token import verify_token
 
@@ -34,13 +34,18 @@ class Wallet(Resource):
             result = wallet_buy(crypto=crypto, amount=amount, wallet=wallet, user=user)
             return Response('{"Success"})', status=201, mimetype='application/json')
 
-
+    # Sell token
     def put(self, token):
         verified_token = verify_token(token)
         if verified_token == "False":
             return Response('{"Unauthorized request"})', status=401, mimetype='application/json')
-        #else:
-        # Sell token
-        pass
-
-
+        else:
+            from controllers.wallet_controller import wallet_sell, get_user_wallet
+            data = request.get_json(force=True)
+            crypto = data["crypto"]
+            amount = data["amount"]
+            amount = float(amount)
+            user = User.query.filter_by(api_token=token).first()
+            wallet = get_user_wallet(user.id)
+            result = wallet_sell(crypto=crypto, amount=amount, wallet=wallet, user=user)
+            return Response('{"Success"})', status=201, mimetype='application/json')

@@ -37,7 +37,7 @@ def wallet_buy(crypto, amount, wallet, user):
     if crypto is not None:
         crypto = crypto.lower()
         wallet = Wallet.query.filter_by(id=wallet.id).first()
-        wallet.set_currency(crypto, bought_tokens)
+        wallet.add_currency(crypto, bought_tokens)
         db.session.commit()
         transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name=token_name, token_amount=bought_tokens, action="Buy")
         user_activity = "Buying crypto"
@@ -50,6 +50,47 @@ def wallet_buy(crypto, amount, wallet, user):
         return "status=200"
     else:
         user_activity = "Error user could not buy crypto"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(activity)
+        db.session.commit()
+        return "status=400"
+
+
+def wallet_sell(crypto, amount, wallet, user):
+    from app import db
+    from models import APILogs, Wallet
+    from blueprints.api import api_get
+    from models import TransactionHistory
+
+    token_usd = api_get(dict=True)
+    token_usd = token_usd[crypto.upper()]
+
+    if wallet.__dict__[crypto] <= 0:
+        user_activity = "Invalid balance"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(activity)
+        db.session.commit()
+        return "status=400"
+
+    sell_usd = amount * token_usd
+    user.current_balance = user.current_balance + sell_usd
+    token_name = f'${crypto.upper()}'
+
+    if crypto is not None:
+        crypto = crypto.lower()
+        wallet = Wallet.query.filter_by(id=wallet.id).first()
+        wallet.remove_currency(crypto, amount)
+        db.session.commit()
+        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=sell_usd, token_name=token_name, token_amount=amount, action="Sell")
+        user_activity = "Selling crypto"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(user)
+        db.session.add(activity)
+        db.session.add(transaction)
+        db.session.commit()
+        return "status=200"
+    else:
+        user_activity = "Error user could not sell crypto"
         activity = APILogs(activity=user_activity, user_id=user.id)
         db.session.add(activity)
         db.session.commit()

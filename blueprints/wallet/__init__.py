@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, Response
 from flask_login import login_required, current_user
 from blueprints.api import api_get
-from controllers.wallet_controller import get_user_wallet, wallet_buy
+from controllers.wallet_controller import get_user_wallet, wallet_buy, wallet_sell
 
 bp_wallet = Blueprint('bp_wallet', __name__)
 
