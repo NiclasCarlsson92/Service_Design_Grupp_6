@@ -24,8 +24,16 @@ class Wallet(Resource):
         if verified_token == "False":
             return Response('{"Unauthorized request"})', status=401, mimetype='application/json')
         else:
+            from controllers.wallet_controller import wallet_buy, get_user_wallet
             data = request.get_json(force=True)
-            print(data)
+            crypto = data["crypto"]
+            amount = data["amount"]
+            amount = float(amount)
+            user = User.query.filter_by(api_token=token).first()
+            wallet = get_user_wallet(user.id)
+            result = wallet_buy(crypto=crypto, amount=amount, wallet=wallet, user=user)
+            print(result)
+            return Response('{"Success"})', status=201, mimetype='application/json')
 
 
     def put(self, token):

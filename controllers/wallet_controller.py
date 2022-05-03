@@ -14,3 +14,41 @@ def get_user_wallet(user_id):
 def get_all_cryptos(wallet_id):
     from models import Wallet
     return Wallet.filter_by(id=wallet_id).query(Wallet.btc, Wallet.eth, Wallet.usdt, Wallet.bnb, Wallet.usdc)
+
+
+def wallet_buy(crypto, amount, wallet, user):
+    from app import db
+    from models import APILogs
+    from blueprints.api import api_get
+    from models import TransactionHistory
+
+    token_usd = api_get(dict=True)
+    token_usd = token_usd[crypto.upper()]
+    user.current_balance = user.current_balance - amount
+    bought_tokens = amount / token_usd
+    token_name = f'${crypto.upper()}'
+
+    if user.current_balance - amount < 0:
+        user_activity = "Invalid balance"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(activity)
+        db.session.commit()
+        return "status=400"
+
+    if crypto is not None:
+        wallet = getattr(wallet, crypto.lower()) + bought_tokens
+        transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name=token_name, token_amount=bought_tokens, action="Buy")
+        user_activity = "Buying crypto"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(user)
+        db.session.add(wallet)
+        db.session.add(activity)
+        db.session.add(transaction)
+        db.session.commit()
+        return "status=200"
+    else:
+        user_activity = "Error user could not buy crypto"
+        activity = APILogs(activity=user_activity, user_id=user.id)
+        db.session.add(activity)
+        db.session.commit()
+        return "status=400"
