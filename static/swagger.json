@@ -1,0 +1,33 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "The Ultimate Book Api",
+    "version": "1.0.0",
+    "description": "This is an API with all the books ever published"
+  },
+  "servers": [{
+      "url": "/api/v1.0.0/"
+  }],
+  "paths": {
+  "/user": {
+    "get": {
+      "summary": "Get all users from database",
+      "description": "Get the full list of all users stored in the database",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#components/schemas/userResponseBody"
+          }
+        }
+      }
+    },
+    "post": {
+      "summary": "Add a new user to the database",
+      "description": "Post data about "
+    }
+  }
