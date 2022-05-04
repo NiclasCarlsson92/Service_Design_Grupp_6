@@ -9,6 +9,7 @@
 <body>
 <div class="menu">
 
+
     {% if current_user.is_authenticated %}
 
         <a class="menu-item" href="{{ url_for('bp_wallet.wallet_get') }}">
@@ -20,6 +21,9 @@
         <a class="menu-item" href="{{ url_for('bp_open.login_get') }}">
             Home
         </a>
+        <a class="menu-item" href="{{ url_for('bp_admin.admin_get') }}">
+            Admin
+        </a>
 
     {% else %}
         <a class="menu-item" href ={{ url_for('bp_open.signup_get') }}>
@@ -30,6 +34,7 @@
 
         </a>
     {% endif %}
+
 </div>
     <hr />
     <h1>CRYPTO EXCHANGE SIMULATOR</h1>
