@@ -9,7 +9,7 @@
     "url": "/api/v1.0/"
   }],
   "paths": {
-    "/user/{token}": {
+    "/user/{tokenId}": {
       "get": {
         "summary": "Get your current balance",
         "description": "Get your current balance stored in the database",
@@ -135,19 +135,21 @@
         }
       }
     },
-    "/wallet/{token}": {
+    "/wallet/{tokenId}": {
       "get": {
         "summary": "Get your token balance",
         "description": "Get balance of all your tokens in your wallet",
-        "parameters": [{
-          "name": "token",
-          "in": "path",
-          "required": true,
-          "description": "Your personal API Token",
-          "schema": {
-            "$ref": "#components/schemas/token"
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "Your personal API Token",
+            "schema": {
+              "$ref": "#components/schemas/token"
+            }
           }
-        }],
+        ],
         "produces": [
           "application/json"
         ],
@@ -162,19 +164,23 @@
             }
           }
         }
-      },
+      }
+    },
+    "/wallet/buy/{tokenId}": {
       "post": {
         "summary": "Create a buy order",
         "description": "Purchase certain amount of a specified token",
-        "parameters": [{
-          "name": "token",
-          "in": "path",
-          "required": true,
-          "description": "Your personal API Token",
-          "schema": {
-            "$ref": "#components/schemas/token"
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "Your personal API Token",
+            "schema": {
+              "$ref": "#components/schemas/token"
+            }
           }
-        }],
+        ],
         "requestBody": {
           "description": "A request to buy a token",
           "required": true,
@@ -192,9 +198,9 @@
         "responses": {
           "200": {
             "description": "Purchase successful",
-                "schema": {
-                  "$ref": "#components/schemas/walletObject"
-                }
+            "schema": {
+              "$ref": "#components/schemas/walletObject"
+            }
           },
           "400": {
             "description": "Bad request",
@@ -217,8 +223,10 @@
             }
           }
         }
-      },
-      "put": {
+      }
+    },
+    "/wallet/sell/{tokenId}": {
+      "post": {
         "summary": "Create a sell order",
         "description": "Sell certain amount of a specified token",
         "parameters": [{

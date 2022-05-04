@@ -4,11 +4,8 @@ from flask_restful import Resource
 from resources.verify_token import verify_token
 
 
-## TODO: Resources should be renamed based on best practices
-
-
 class User(Resource):
-    # Get current balance [/api/v1.0/user/{token}]
+    # Get current balance [/api/v1.0/user/{tokenId}]
     def get(self, token):
         verified_token = verify_token(token)
         if verified_token is False:
@@ -20,7 +17,7 @@ class User(Resource):
             return Response(json.dumps({"Message": "Your current balance is: " + str(balance) + "$"}), status=200, mimetype='application/json')
 
 
-    # Update password [/api/v1.0/user/{token}]
+    # Update password [/api/v1.0/user/{tokenId}]
     def put(self, token):
         verified_token = verify_token(token)
         if verified_token is False:
@@ -34,16 +31,17 @@ class User(Resource):
             password = data["new password"]
             user = User.query.filter_by(email=email).first()
             if user is None:
-                return Response('{"message": "Bad request"}', status=400, mimetype='application/json')
+                return Response('{"Message": "Bad request"}', status=400, mimetype='application/json')
             else:
                 hashed_password = argon2.using(rounds=10).hash(password)
                 user.password = hashed_password
                 from app import db
                 db.session.add(user)
                 db.session.commit()
-                return Response('{"message": "Password updated"}', status=202, mimetype='application/json')
+                return Response('{"Message": "Password updated"}', status=202, mimetype='application/json')
 
-    # Delete user [/api/v1.0/user/{token}]
+
+    # Delete user [/api/v1.0/user/{tokenId}]
     def delete(self, token):
         verified_token = verify_token(token)
         if verified_token is False:
@@ -60,6 +58,6 @@ class User(Resource):
                 db.session.commit()
                 return Response(json.dumps({"Message": "User deleted"}), status=200, mimetype='application/json')
             else:
-                return Response('{"message": "User not found"}', status=404, mimetype='application/json')
+                return Response('{"Message": "User not found"}', status=404, mimetype='application/json')
         else:
             return Response(json.dumps({"Error": "You need admin privilege to perform that request"}), status=401, mimetype='application/json')

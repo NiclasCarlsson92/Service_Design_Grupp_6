@@ -5,12 +5,9 @@ from flask import Response, request
 from resources.verify_token import verify_token
 
 
-## TODO: Resources should be renamed based on best practices
-
-
 class Wallet(Resource):
 
-    # Get all cryptos balance [/api/v1.0/wallet/{token}]
+    # Get all cryptos balance [/api/v1.0/wallet/{tokenId}]
     def get(self, token):
         verified_token = verify_token(token)
         if verified_token is False:
@@ -23,7 +20,9 @@ class Wallet(Resource):
             return Response(json.dumps({'Message': all_cryptos}), status=200, mimetype='application/json')
 
 
-    # Buy new token [/api/v1.0/wallet/buy/{token}]
+class WalletBuy(Resource):
+
+    # Buy new token [/api/v1.0/wallet/buy/{tokenId}]
     def post(self, token):
         verified_token = verify_token(token)
         if verified_token is False:
@@ -46,9 +45,11 @@ class Wallet(Resource):
                 return Response(json.dumps(f'{f"You have purchased {amount}$ of {crypto}."}'), status=200,
                                 mimetype='application/json')
 
-    # Sell token [/api/v1.0/wallet/sell/{token}]
-    ## TODO: replace for a post function
-    def put(self, token):
+
+class WalletSell(Resource):
+
+    # Sell token [/api/v1.0/wallet/sell/{tokenId}]
+    def post(self, token):
         verified_token = verify_token(token)
         if verified_token is False:
             return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
