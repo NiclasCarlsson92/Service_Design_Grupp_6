@@ -10,7 +10,7 @@ class Wallet(Resource):
     def get(self, token):
         verified_token = verify_token(token)
         if verified_token == "False":
-            return Response("{'Error':'Unauthorized request'})", status=401, mimetype='application/json')
+            return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
         else:
             user = User.query.filter_by(api_token=token).first()
             from controllers.wallet_controller import get_all_cryptos, get_user_wallet
@@ -22,7 +22,7 @@ class Wallet(Resource):
     def post(self, token):
         verified_token = verify_token(token)
         if verified_token == "False":
-            return Response('{"Unauthorized request"})', status=401, mimetype='application/json')
+            return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
         else:
             from controllers.wallet_controller import wallet_buy, get_user_wallet
             data = request.get_json(force=True)
@@ -33,13 +33,13 @@ class Wallet(Resource):
             wallet = get_user_wallet(user.id)
             result = wallet_buy(crypto=crypto, amount=amount, wallet=wallet, user=user)
             ## TODO response based on result code
-            return Response('{"Success"})', status=201, mimetype='application/json')
+            return Response(json.dumps({'Message': 'Success'}), status=201, mimetype='application/json')
 
     # Sell token
     def put(self, token):
         verified_token = verify_token(token)
         if verified_token == "False":
-            return Response('{"Unauthorized request"})', status=401, mimetype='application/json')
+            return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
         else:
             from controllers.wallet_controller import wallet_sell, get_user_wallet
             data = request.get_json(force=True)
@@ -49,4 +49,4 @@ class Wallet(Resource):
             user = User.query.filter_by(api_token=token).first()
             wallet = get_user_wallet(user.id)
             result = wallet_sell(crypto=crypto, amount=amount, wallet=wallet, user=user)
-            return Response('{"Success"})', status=201, mimetype='application/json')
+            return Response(json.dumps({'Message': 'Success'}), status=201, mimetype='application/json')
