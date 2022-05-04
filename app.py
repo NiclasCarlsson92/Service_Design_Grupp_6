@@ -20,7 +20,7 @@ def create_app():
     api = Api(app)
     from resources import api_user, api_wallet
     api.add_resource(api_wallet.Wallet, "/api/v1.0/wallet/<string:token>")
-    api.add_resource(api_user.Client, "/api/v1.0/client/<string:token>")
+    api.add_resource(api_user.Client, "/api/v1.0/user/<string:token>")
 
     db.init_app(app)
 
