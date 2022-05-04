@@ -3,13 +3,23 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
-
+from flask_swagger_ui import get_swaggerui_blueprint
 
 db = SQLAlchemy()
 
+# Swagger
+SWAGGER_URL = '/documentation'
+SWAGGER_JSON = '/static/swagger.json'
+SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    SWAGGER_JSON,
+    config={
+        'app_name': 'Crypto Exchange Api'
+    }
+)
+
 
 def create_app():
-
     # Create a Flask application
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '123secret'
@@ -43,6 +53,7 @@ def create_app():
 
     from blueprints.api import bp_api
     app.register_blueprint(bp_api)
+    app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix=SWAGGER_URL)
 
     return app
 

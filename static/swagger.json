@@ -1,0 +1,373 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Crypto Exchange API",
+    "version": "1.0.0",
+    "description": "This is an API regarding the Crypto Exchange Simulator"
+  },
+  "servers": [{
+    "url": "/api/v1.0/"
+  }],
+  "paths": {
+    "/user/{token}": {
+      "get": {
+        "summary": "Get your current balance",
+        "description": "Get your current balance stored in the database",
+        "parameters": [{
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "description": "Your personal API Token",
+          "schema": {
+            "$ref": "#components/schemas/token"
+          }
+        }],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#components/schemas/walletResponseBody"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "schema": {
+              "$ref": "#components/schemas/walletResponseBody"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user password",
+        "description": "Admin can update password of a specific user",
+        "parameters": [{
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "description": "Your personal API Token",
+          "schema": {
+            "$ref": "#components/schemas/token"
+          }
+        }],
+        "requestBody": {
+          "description": "A request to update user password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/userPasswordUpdateBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "Password updated",
+            "schema": {
+              "$ref": "#components/schemas/walletObject"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schemas": {
+              "$ref": "#components/schemas/errorObject"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "schemas": {
+              "$ref": "#components/schemas/errorObject"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "description": "Admin can delete a specific user",
+        "parameters": [{
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "description": "Your personal API Token",
+          "schema": {
+            "$ref": "#components/schemas/token"
+          }
+        }],
+        "requestBody": {
+          "description": "A request to delete a user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/userDeleteBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User has been deleted",
+            "schema": {
+              "$ref": "#components/schemas/userDeleteBody"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "schema": {
+              "$ref": "#components/schemas/errorObject"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#components/schemas/errorObject"
+            }
+          }
+        }
+      }
+    },
+    "/wallet/{token}": {
+      "get": {
+        "summary": "Get your token balance",
+        "description": "Get balance of all your tokens in your wallet",
+        "parameters": [{
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "description": "Your personal API Token",
+          "schema": {
+            "$ref": "#components/schemas/token"
+          }
+        }],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/walletObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "schema": {
+              "$ref": "#components/schemas/errorObject"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a buy order",
+        "description": "Purchase certain amount of a specified token",
+        "parameters": [{
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "description": "Your personal API Token",
+          "schema": {
+            "$ref": "#components/schemas/token"
+          }
+        }],
+        "requestBody": {
+          "description": "A request to buy a token",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/walletBuyBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchase successful",
+                "schema": {
+                  "$ref": "#components/schemas/walletObject"
+                }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/errorObject"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Not enough balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/errorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Create a sell order",
+        "description": "Sell certain amount of a specified token",
+        "parameters": [{
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "description": "Your personal API Token",
+          "schema": {
+            "$ref": "#components/schemas/token"
+          }
+        }],
+        "requestBody": {
+          "description": "A request to sell a token",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/walletSellBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Sell successful",
+                "schema": {
+                  "$ref": "#components/schemas/walletObject"
+                }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/errorObject"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Not enough balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/errorObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "token": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Your personal API token"
+          }
+        }
+      },
+      "userPasswordUpdateBody": {
+        "type": "object",
+        "description": "Email and user's new password",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email"
+          },
+          "new password": {
+            "type": "string",
+            "description": "The new password"
+          }
+        }
+      },
+      "userDeleteBody": {
+        "type": "object",
+        "description": "Email of the user that will be deleted",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email"
+          }
+        }
+      },
+      "walletObject": {
+        "type": "object",
+        "description": "A wallet object",
+        "properties": {
+          "crypto": {
+            "type": "string",
+            "description": "The ticker symbol of the token you want to buy/sell"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount of usd you want to use"
+          }
+        }
+      },
+      "walletBuyBody": {
+        "type": "object",
+        "description": "The amount and which token you want to buy",
+        "properties": {
+          "crypto": {
+            "type": "string",
+            "description": "The ticker symbol of the token you want to buy"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount of usd you want to buy"
+          }
+        }
+      },
+      "walletSellBody": {
+        "type": "object",
+        "description": "The amount and which token you want to sell",
+        "properties": {
+          "crypto": {
+            "type": "string",
+            "description": "The ticker symbol of the token you want to sell"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount of tokens you want to sell"
+          }
+        }
+      },
+      "errorObject": {
+        "type": "object",
+        "description": "An object describing an error",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "The reason for the described"
+          }
+        }
+      }
+    }
+  }
+}

@@ -9,17 +9,17 @@ class Client(Resource):
     def get(self, token):
         verified_token = verify_token(token)
         if verified_token == "False":
-            return Response('{"Unauthorized request"})', status=401, mimetype='application/json')
+            return Response(json.dumps({"Error": "Unauthorized request"}), status=401, mimetype='application/json')
         else:
             from models import User
             user = User.query.filter_by(api_token=token).first()
             balance = user.current_balance
-            return Response(json.dumps({"message": "Your current balance is: " + str(balance) + "$"}), status=200, mimetype='application/json')
+            return Response(json.dumps({"Message": "Your current balance is: " + str(balance) + "$"}), status=200, mimetype='application/json')
 
 
     def put(self, token):
         if verify_token(token) == "False":
-            return Response('{"Unauthorized request"}', status=401, mimetype='application/json')
+            return Response(json.dumps({"Error": "Unauthorized request"}), status=401, mimetype='application/json')
         from models import User
         from passlib.hash import argon2
         admin = User.query.filter_by(api_token=token).first()
@@ -34,13 +34,12 @@ class Client(Resource):
             from app import db
             db.session.add(user)
             db.session.commit()
-            return Response('{"message": "Password updated"}', status=201, mimetype='application/json')
-
+            return Response(json.dumps({"Message": "Password updated"}), status=201, mimetype='application/json')
 
     def delete(self, token):
         verified_token = verify_token(token)
         if verified_token == "False":
-            return Response('{"Unauthorized request"})', status=401, mimetype='application/json')
+            return Response(json.dumps({"Error": "Unauthorized request"}), status=401, mimetype='application/json')
         from models import User
         admin = User.query.filter_by(api_token=token).first()
         if admin.admin == 1:
@@ -51,8 +50,8 @@ class Client(Resource):
                 from app import db
                 db.session.delete(user_to_delete)
                 db.session.commit()
-                return Response('{"message": "User deleted"}', status=201, mimetype='application/json')
+                return Response(json.dumps({"Message": "User deleted"}), status=201, mimetype='application/json')
             else:
-                return Response('{"message": "User not found"}', status=404, mimetype='application/json')
+                return Response(json.dumps({"Error": "User not found"}), status=404, mimetype='application/json')
         else:
-            return Response('{"message": "You need admin privilege to perform that request"}', status=400, mimetype='application/json')
+            return Response(json.dumps({"Error": "You need admin privilege to perform that request"}), status=400, mimetype='application/json')
