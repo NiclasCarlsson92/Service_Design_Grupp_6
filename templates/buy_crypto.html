@@ -18,24 +18,20 @@
             <th>Price</th>
             <th>Held</th>
         </tr>
-           {% for key, value in cryptos.items() %}
-               <tr>
-                <td>{{key}}</td>
-                <td id="{{ key }}">{{value}}</td>
-                <td>{{wallet[key]}}</td>
-                <td id="{{ key }} wallet">{{wallet[key]}}</td>
-
-               </tr>
-
-           {% endfor %}
+        {% for key, value in cryptos.items() %}
+            <tr>
+             <td>{{key}}</td>
+             <td id="{{ key }}">{{value}}</td>
+             <td>{{wallet[key]}}</td>
+             <td id="{{ key }} wallet">{{wallet[key]}}</td>
+            </tr>
+        {% endfor %}
     </table>
     <br/>
     <br/>
-
     <a id="balance" class="your-balance">
-
         Your balance: {{ current_user.current_balance }}$
-    </a>
+    </a> <br/>
     <form>
         <label for="crypto">Crypto</label>
         <input type="text" name="crypto" id="crypto">
@@ -43,7 +39,7 @@
         <label for="amount">Amount USD</label>
         <input type="text" name="amount" id="amount">
 
-        <button type="submit">Buy</button>
+        <button class="button1" onclick="{{ url_for('bp_wallet.wallet_buy') }}" >Buy</button>
     </form>
 
 

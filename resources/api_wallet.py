@@ -32,6 +32,7 @@ class Wallet(Resource):
             user = User.query.filter_by(api_token=token).first()
             wallet = get_user_wallet(user.id)
             result = wallet_buy(crypto=crypto, amount=amount, wallet=wallet, user=user)
+            ## TODO response based on result code
             return Response('{"Success"})', status=201, mimetype='application/json')
 
     # Sell token

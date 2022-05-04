@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request, Response
-from flask_login import login_required, current_user
 from blueprints.api import api_get
+from flask_login import login_required, current_user
+from flask import Blueprint, render_template, redirect, url_for, request, Response
 from controllers.wallet_controller import get_user_wallet, wallet_buy, wallet_sell
 
 bp_wallet = Blueprint('bp_wallet', __name__)
@@ -42,9 +42,8 @@ def wallet_buy():
     crypto = data["crypto"]
     amount = data["amount"]
     amount = float(amount)
-    user = current_user
-    wallet = get_user_wallet(user.id)
-    result = wallet_buy(crypto, amount, wallet.id, user.id)
+    wallet = get_user_wallet(current_user.id)
+    result = wallet_buy(crypto=crypto, amount=amount, wallet=wallet, user=current_user)
     return Response(result)
 
 @bp_wallet.put('/api/v.1/sell')

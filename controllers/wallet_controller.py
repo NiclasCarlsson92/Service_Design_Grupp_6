@@ -36,14 +36,13 @@ def wallet_buy(crypto, amount, wallet, user):
 
     if crypto is not None:
         crypto = crypto.lower()
-        wallet = Wallet.query.filter_by(id=wallet.id).first()
+        wallet = get_user_wallet(user.id)
         wallet.add_currency(crypto, bought_tokens)
         db.session.commit()
         transaction = TransactionHistory(wallet_id=wallet.id, amount_usd=amount, token_name=token_name, token_amount=bought_tokens, action="Buy")
         user_activity = "Buying crypto"
         activity = APILogs(activity=user_activity, user_id=user.id)
         db.session.add(user)
-        #db.session.add(wallet)
         db.session.add(activity)
         db.session.add(transaction)
         db.session.commit()
