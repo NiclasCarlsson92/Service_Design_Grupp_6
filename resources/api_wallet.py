@@ -1,27 +1,32 @@
 import json
-from flask import Response, request
 from models import User
 from flask_restful import Resource
+from flask import Response, request
 from resources.verify_token import verify_token
 
 
+## TODO: Resources should be renamed based on best practices
+
+
 class Wallet(Resource):
-    # Get all cryptos balance
+
+    # Get all cryptos balance [/api/v1.0/wallet/{token}]
     def get(self, token):
         verified_token = verify_token(token)
-        if verified_token == "False":
+        if verified_token is False:
             return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
         else:
             user = User.query.filter_by(api_token=token).first()
-            from controllers.wallet_controller import get_all_cryptos, get_user_wallet
+            from controllers.wallet_controller import get_user_wallet
             wallet = get_user_wallet(user.id)
             all_cryptos = wallet.get_cryptos()
-            return Response(json.dumps({"message": all_cryptos}), status=201, mimetype='application/json')
+            return Response(json.dumps({'Message': all_cryptos}), status=200, mimetype='application/json')
 
-    # Buy new token
+
+    # Buy new token [/api/v1.0/wallet/buy/{token}]
     def post(self, token):
         verified_token = verify_token(token)
-        if verified_token == "False":
+        if verified_token is False:
             return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
         else:
             from controllers.wallet_controller import wallet_buy, get_user_wallet
@@ -32,13 +37,20 @@ class Wallet(Resource):
             user = User.query.filter_by(api_token=token).first()
             wallet = get_user_wallet(user.id)
             result = wallet_buy(crypto=crypto, amount=amount, wallet=wallet, user=user)
-            ## TODO response based on result code
-            return Response(json.dumps({'Message': 'Success'}), status=201, mimetype='application/json')
+            if result == 405:
+                return Response(json.dumps({'Message': 'Not enough balance.'}), status=405,
+                                mimetype='application/json')
+            elif result == 400:
+                return Response(json.dumps({'Error' : 'User could not buy crypto.'}), status=400, mimetype='application/json')
+            else:
+                return Response(json.dumps(f'{f"You have purchased {amount}$ of {crypto}."}'), status=200,
+                                mimetype='application/json')
 
-    # Sell token
+    # Sell token [/api/v1.0/wallet/sell/{token}]
+    ## TODO: replace for a post function
     def put(self, token):
         verified_token = verify_token(token)
-        if verified_token == "False":
+        if verified_token is False:
             return Response(json.dumps({'Error': 'Unauthorized request'}), status=401, mimetype='application/json')
         else:
             from controllers.wallet_controller import wallet_sell, get_user_wallet
@@ -49,4 +61,14 @@ class Wallet(Resource):
             user = User.query.filter_by(api_token=token).first()
             wallet = get_user_wallet(user.id)
             result = wallet_sell(crypto=crypto, amount=amount, wallet=wallet, user=user)
-            return Response(json.dumps({'Message': 'Success'}), status=201, mimetype='application/json')
+            if result == 405:
+                return Response(json.dumps({'Message': 'Not enough balance.'}), status=405,
+                                mimetype='application/json')
+            elif result == 400:
+                return Response(json.dumps({'Error' : 'User could not buy crypto.'}),
+                                status=400,
+                                mimetype='application/json')
+            else:
+                return Response(json.dumps(f'{f"You have sold {amount}$ of {crypto}"}'),
+                                status=200,
+                                mimetype='application/json')

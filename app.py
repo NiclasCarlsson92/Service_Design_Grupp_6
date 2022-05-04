@@ -1,8 +1,8 @@
 import dotenv
 from flask import Flask
+from flask_restful import Api
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Api
 from flask_swagger_ui import get_swaggerui_blueprint
 
 db = SQLAlchemy()
@@ -20,7 +20,7 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
 
 
 def create_app():
-    # Create a Flask application
+    # Create a Flask application and configure SQLAlchemy
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '123secret'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -30,7 +30,7 @@ def create_app():
     api = Api(app)
     from resources import api_user, api_wallet
     api.add_resource(api_wallet.Wallet, "/api/v1.0/wallet/<string:token>")
-    api.add_resource(api_user.Client, "/api/v1.0/user/<string:token>")
+    api.add_resource(api_user.User, "/api/v1.0/user/<string:token>")
 
     db.init_app(app)
 

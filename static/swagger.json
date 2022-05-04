@@ -29,13 +29,13 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#components/schemas/walletResponseBody"
+              "$ref": "#components/schemas/userResponseBody"
             }
           },
           "401": {
             "description": "Unauthorized request",
             "schema": {
-              "$ref": "#components/schemas/walletResponseBody"
+              "$ref": "#components/schemas/errorObject"
             }
           }
         }
@@ -53,7 +53,7 @@
           }
         }],
         "requestBody": {
-          "description": "A request to update user password",
+          "description": "Submit user email and new password",
           "required": true,
           "content": {
             "application/json": {
@@ -100,7 +100,7 @@
           }
         }],
         "requestBody": {
-          "description": "A request to delete a user",
+          "description": "Submit the user email you want to delete",
           "required": true,
           "content": {
             "application/json": {
@@ -153,14 +153,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#components/schemas/walletObject"
-                }
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized request",
@@ -292,6 +285,11 @@
           }
         }
       },
+      "userResponseBody": {
+        "type": "string",
+        "description": "A string with information"
+
+      },
       "userPasswordUpdateBody": {
         "type": "object",
         "description": "Email and user's new password",
@@ -315,6 +313,10 @@
             "description": "The user's email"
           }
         }
+      },
+      "walletResponseObject": {
+        "type": "string",
+        "description": "A string with information"
       },
       "walletObject": {
         "type": "object",
