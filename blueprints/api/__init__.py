@@ -22,7 +22,7 @@ def api_get(**kwargs):
         'Accepts': 'application/json',
         # API Key is linked to an account created by estani
 
-        'X-CMC_PRO_API_KEY': API_KEY
+        'X-CMC_PRO_API_KEY': '12c385ec-6a53-458e-b418-d4a987d2e3a5'
 
 
     }
