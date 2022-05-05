@@ -24,3 +24,4 @@ python-dotenv~=0.20.0
 requests~=2.25.1
 Flask-RESTful==0.3.9
 pytest~=7.1.2
+flask-swagger-ui==3.36.0
