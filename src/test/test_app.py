@@ -4,12 +4,12 @@ from app import create_app
 
 @pytest.fixture
 def client():
-    app = create_app()
+    app_testing = create_app()
 
-    app.config['TESTING'] = True
+    app_testing.config['TESTING'] = True
 
-    with app.app_context():
-        with app.test_client() as api_client:
+    with app_testing.app_context():
+        with app_testing.test_client() as api_client:
             yield api_client
 
 
