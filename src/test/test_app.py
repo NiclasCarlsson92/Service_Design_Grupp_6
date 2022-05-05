@@ -1,6 +1,6 @@
 import pytest
 from app import create_app
-
+from blueprints.api import api_get
 
 @pytest.fixture
 def client():
@@ -13,6 +13,8 @@ def client():
             yield api_client
 
 
-def test_status_code_ok(client):
-    response = client.get('/')
+def test_coinmarketcapapi(client):
+
+    response = client.get('/api/v1.0/user/b1df1fb2cae011eca11ab06ebfd0e3f3')
+    print(response.status_code)
     assert response.status_code == 200
