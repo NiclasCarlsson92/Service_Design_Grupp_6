@@ -18,8 +18,8 @@ class User(Resource):
             from models import User
             user = User.query.filter_by(api_token=token).first()
             balance = user.current_balance
-            return Response(json.dumps({"Message": "Your current balance is: " + str(balance) + "$"}), status=200, mimetype='application/json')
-
+            return Response(json.dumps({"Message": "Your current balance is: " + str(balance) + "$"}), status=200,
+                            mimetype='application/json')
 
     # Update password [/api/v1.0/user/{token}]
     def put(self, token):
@@ -63,4 +63,5 @@ class User(Resource):
             else:
                 return Response(json.dumps({"message": "User not found"}), status=404, mimetype='application/json')
         else:
-            return Response(json.dumps({"Error": "You need admin privilege to perform that request"}), status=401, mimetype='application/json')
+            return Response(json.dumps({"Error": "You need admin privilege to perform that request"}), status=401,
+                            mimetype='application/json')

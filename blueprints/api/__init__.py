@@ -5,16 +5,16 @@ from dotenv import load_dotenv
 from flask import Blueprint, Response, request
 from controllers.user_controller import get_user_by_id
 from controllers.wallet_controller import get_user_wallet
-load_dotenv()
 
+load_dotenv()
 
 bp_api = Blueprint('bp_api', __name__)
 
 API_KEY = os.getenv('API_KEY')
 
+
 @bp_api.get("/api/v.1/cryptousd")
 def api_get(**kwargs):
-
     headers = {
         'Accepts': 'application/json',
         # API Key is linked to an account created by estani

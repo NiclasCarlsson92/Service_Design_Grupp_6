@@ -1,4 +1,3 @@
-db.sqlite
 venv/
 .idea/
 __pycache__/
