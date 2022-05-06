@@ -1,10 +1,9 @@
 """tests made for our api"""
 import json
 import pytest
-from app import create_app
+from app import create_app, db
 from controllers.user_controller import get_user_by_id
 from blueprints.api import api_get
-from app import db
 
 
 @pytest.fixture
