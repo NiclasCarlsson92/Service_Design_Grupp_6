@@ -1,6 +1,9 @@
 """tests made for our api"""
+import json
 import pytest
 from app import create_app
+from controllers.user_controller import get_user_by_id
+from blueprints.api import api_get
 
 
 @pytest.fixture
@@ -16,7 +19,23 @@ def client():
 
 
 def test_user_api(client):
-    """testing the user api"""
-    response = client.get('/api/v1.0/user/b1df1fb2cae011eca11ab06ebfd0e3f3')
-    print(response.status_code)
+    """Test to see if we get a successful response when asking for a users current balance"""
+    user = get_user_by_id(1)
+    user_token = user.api_token
+    response = client.get(f'/api/v1.0/user/{user_token}')
     assert response.status_code == 200
+
+
+def test_wallet_api(client):
+    """Test to see if we get a successful response when asking for a users wallet"""
+    user = get_user_by_id(1)
+    user_token = user.api_token
+    response = client.get(f'/api/v1.0/wallet/{user_token}')
+    assert response.status_code == 200
+
+
+def test_coinmarketcap_api(client):
+    """Test to see if our request to CMCApi return something"""
+    response = api_get()
+    json_data = json.dumps(response)
+    assert json_data is not None
