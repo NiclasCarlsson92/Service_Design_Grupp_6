@@ -19,5 +19,5 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: pip3 install -U pip setuptools
-    - run: pip3 install -U pip -r requirements.txt
+    - run: pip3 install -U -r requirements.txt
     - run: pylint --rcfile=pylint.rc src/
