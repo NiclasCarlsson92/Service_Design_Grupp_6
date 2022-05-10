@@ -24,6 +24,7 @@ def test_user_api(client):
     user_token = user.api_token
     response = client.get(f'/api/v1.0/user/{user_token}')
     assert response.status_code == 200
+    assert response.content_type == 'application/json'
 
 
 def test_wallet_api(client):
@@ -32,6 +33,7 @@ def test_wallet_api(client):
     user_token = user.api_token
     response = client.get(f'/api/v1.0/wallet/{user_token}')
     assert response.status_code == 200
+    assert response.content_type == 'application/json'
 
 
 def test_coinmarketcap_api(client):
