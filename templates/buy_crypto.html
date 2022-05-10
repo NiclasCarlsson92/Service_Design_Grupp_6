@@ -10,6 +10,7 @@
     {% endif %}
 
     <input type="hidden" id="userData" value="{{ current_user.id }}">
+    <input type="hidden" id="userToken" value="{{ current_user.api_token }}">
     <h1 id="main-heading">Today's Cryptocurrency Prices by Market Cap</h1>
     <br />
     <table class="center">
@@ -22,7 +23,6 @@
             <tr>
              <td>{{key}}</td>
              <td id="{{ key }}">{{value}}</td>
-             <td>{{wallet[key]}}</td>
              <td id="{{ key }} wallet">{{wallet[key]}}</td>
             </tr>
         {% endfor %}
@@ -52,9 +52,9 @@
         setInterval(updateCrypto, 15000);
 
         function updateUserWallet() {
-            let userData = {};
-            userData.user = document.getElementById("userData").value;
-            fetch("http://127.0.0.1:5000/api/v.1/get_user_crypto?id=" + userData["user"], {
+
+            let userData = document.getElementById("userData").value;
+            fetch("http://127.0.0.1:5000/api/v.1/get_user_crypto?id=" + userData, {
                 method: "GET"
                 })
             .then(response => response.json())
@@ -99,12 +99,13 @@
         const value = Object.fromEntries(data.entries());
 
         // console.log({ value });
-        fetch("http://127.0.0.1:5000/api/v.1/buy", {
-            method: 'PUT',
+        let userToken = document.getElementById("userToken").value;
+        fetch("http://127.0.0.1:5000/api/v1.0/wallet/buy/" + userToken, {
+            method: 'POST',
             body: JSON.stringify(value)})
 
         setTimeout(updateUserWallet, 1500)
-      }
+        }
       const form = document.querySelector('form');
       form.addEventListener('submit', handleSubmit);
 
