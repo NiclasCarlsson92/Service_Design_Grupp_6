@@ -1,6 +1,11 @@
 # Service Design - Grupp 6
 
 
+Heroku - https://kyhapi6.herokuapp.com/
+
+You can do /documentation for Swagger 
+
+
 Ni skall skapa en tjänst i form av ett API. Ni bestämmer själva vad ert API skall göra, men det måste uppfylla följande kriterier:
 
 - Det skall följa god praxis och nå upp till nivå 3 i Richardson Maturity Model
@@ -14,3 +19,4 @@ Ni skall skapa en tjänst i form av ett API. Ni bestämmer själva vad ert API s
 - Access till ert API skall loggas i databasen. Ni skall alltså kunna se vem som använt API:et, när det skett och i vilket omfattning (exempelvis
   mängden data)
 - Ert API skall ha en dokumentation, för detta kan ni exempelvis använda Swagger, men andra ramverk går också bra
+
