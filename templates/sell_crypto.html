@@ -40,7 +40,7 @@
         <label for="amount">Amount in selected Crypto</label>
         <input type="text" name="amount" id="amount">
 
-        <button class="button3" type="submit">Sell</button>
+        <button class="button3" onclick="{{ url_for('bp_wallet.wallet_sell') }}">Sell</button>
     </form>
 
 

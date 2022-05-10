@@ -226,7 +226,7 @@
       }
     },
     "/wallet/sell/{tokenId}": {
-      "put": {
+      "post": {
         "summary": "Create a sell order",
         "description": "Sell certain amount of a specified token",
         "parameters": [{

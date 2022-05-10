@@ -32,7 +32,6 @@ def wallet_get():
     return render_template('wallet.html', user=user, activity=activity, cryptos=cryptos)
 
 
-# TODO add more activity and make transaction history real, and add ajax to the buy and sell html for the wallet
 @bp_wallet.put('/api/v.1/buy')
 @login_required
 def wallet_buy():
