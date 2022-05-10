@@ -49,7 +49,6 @@ def get_all_cryptos():
     # data = request.get_json(force=True)
     user_id = request.args.get("id")
     user = get_user_by_id(user_id)
-    print(user_id)
     wallet = get_user_wallet(user_id)
     crypto = wallet.get_cryptos()
     crypto["userBalance"] = user.current_balance

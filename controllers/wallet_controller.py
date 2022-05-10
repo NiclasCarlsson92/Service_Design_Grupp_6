@@ -18,7 +18,7 @@ def get_all_cryptos(wallet_id):
 def validate_ticker(crypto):
     tickers = ["btc", "eth", "usdt", "bnb", "usdc"]
     for ticker in tickers:
-        if crypto == ticker:
+        if crypto.lower() == ticker:
             return True
     return False
 
@@ -78,7 +78,7 @@ def wallet_sell(crypto, amount, wallet, user):
     if ticker is False:
         return 400
 
-    if wallet.__dict__[crypto] <= 0:
+    if wallet.__dict__[crypto.lower()] <= 0:
         user_activity = "Invalid balance"
         activity = APILogs(activity=user_activity, user_id=user.id)
         db.session.add(activity)

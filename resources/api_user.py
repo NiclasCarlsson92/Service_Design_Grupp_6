@@ -42,7 +42,7 @@ class User(Resource):
                 from app import db
                 db.session.add(user)
                 db.session.commit()
-                return Response(json.dumps({"message": "Password updated"}), status=202, mimetype='application/json')
+                return Response(json.dumps({"Message": "Password updated"}), status=202, mimetype='application/json')
 
     # Delete user [/api/v1.0/user/{token}]
     def delete(self, token):
