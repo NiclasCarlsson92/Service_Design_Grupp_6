@@ -5,9 +5,6 @@ from flask_restful import Resource
 from resources.verify_token import verify_token
 
 
-## TODO: Resources should be renamed based on best practices
-
-
 class User(Resource):
     # Get current balance [/api/v1.0/user/{token}]
     def get(self, token):

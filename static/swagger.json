@@ -9,7 +9,7 @@
     "url": "/api/v1.0/"
   }],
   "paths": {
-    "/user/{token}": {
+    "/users/{token}": {
       "get": {
         "summary": "Get your current balance",
         "description": "Get your current balance stored in the database",
@@ -135,7 +135,7 @@
         }
       }
     },
-    "/wallet/{token}": {
+    "/wallets/{token}": {
       "get": {
         "summary": "Get your token balance",
         "description": "Get balance of all your tokens in your wallet",
@@ -166,7 +166,7 @@
         }
       }
     },
-    "/wallet/buy/{tokenId}": {
+    "/wallets/buy/{tokenId}": {
       "post": {
         "summary": "Create a buy order",
         "description": "Purchase certain amount of a specified token",
@@ -225,7 +225,7 @@
         }
       }
     },
-    "/wallet/sell/{tokenId}": {
+    "/wallets/sell/{tokenId}": {
       "post": {
         "summary": "Create a sell order",
         "description": "Sell certain amount of a specified token",
