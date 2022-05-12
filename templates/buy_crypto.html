@@ -100,7 +100,7 @@
 
         // console.log({ value });
         let userToken = document.getElementById("userToken").value;
-        fetch("http://127.0.0.1:5000/api/v1.0/wallet/buy/" + userToken, {
+        fetch("http://127.0.0.1:5000/api/v1.0/wallets/buy/" + userToken, {
             method: 'POST',
             body: JSON.stringify(value)})
 
