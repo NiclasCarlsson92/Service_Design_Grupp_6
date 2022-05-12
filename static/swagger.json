@@ -12,7 +12,7 @@
     "/users/{token}": {
       "get": {
         "summary": "Get your current balance",
-        "description": "Get your current balance stored in the database",
+        "description": "Gets info about the user and links to the crypto market",
         "parameters": [{
           "name": "token",
           "in": "path",
@@ -42,7 +42,7 @@
       },
       "put": {
         "summary": "Update user password",
-        "description": "Admin can update password of a specific user",
+        "description": "Admins and the user can update the password of user",
         "parameters": [{
           "name": "token",
           "in": "path",
@@ -89,7 +89,7 @@
       },
       "delete": {
         "summary": "Delete a user",
-        "description": "Admin can delete a specific user",
+        "description": "Admins and the user can delete user",
         "parameters": [{
           "name": "token",
           "in": "path",
@@ -137,8 +137,8 @@
     },
     "/wallets/{token}": {
       "get": {
-        "summary": "Get your token balance",
-        "description": "Get balance of all your tokens in your wallet",
+        "summary": "Get your token balance and the markets value",
+        "description": "Get balance of all your tokens in your wallet and the current market value of our crypto, also links to buy and sell",
         "parameters": [
           {
             "name": "token",

@@ -15,7 +15,14 @@ class User(Resource):
             from models import User
             user = User.query.filter_by(api_token=token).first()
             balance = user.current_balance
-            return Response(json.dumps({"Message": "Your current balance is: " + str(balance) + "$"}), status=200,
+            message = {"id": user.id, "name": user.name, "balance": str(user.current_balance) + "$", "email": user.email,
+                       "admin": user.admin, 'links': {
+                        'Crypto market(GET)': f'/api/v1.0/wallets/{user.api_token}',
+                        "Change password(PUT)": f'/api/v1.0/users/{user.api_token}',
+                        'Delete user(DEL)': f'/api/v1.0/users/{user.api_token}'
+                        }}
+
+            return Response(json.dumps({"Message": message}), status=200,
                             mimetype='application/json')
 
     # Update password [/api/v1.0/user/{token}]
@@ -26,7 +33,7 @@ class User(Resource):
         from models import User
         from passlib.hash import argon2
         admin = User.query.filter_by(api_token=token).first()
-        if admin.admin == 1:
+        if admin.admin == 1 or admin.api_token == token:
             data = request.get_json(force=True)
             email = data["email"]
             password = data["new password"]
@@ -48,7 +55,7 @@ class User(Resource):
             return Response(json.dumps({"Error": "Unauthorized request"}), status=401, mimetype='application/json')
         from models import User
         admin = User.query.filter_by(api_token=token).first()
-        if admin.admin == 1:
+        if admin.admin == 1 or admin.api_token == token:
             data = request.get_json(force=True)
             email = data["email"]
             user_to_delete = User.query.filter_by(email=email).first()

@@ -17,7 +17,11 @@ class Wallet(Resource):
             from controllers.wallet_controller import get_user_wallet
             wallet = get_user_wallet(user.id)
             all_cryptos = wallet.get_cryptos()
-            return Response(json.dumps({'Message': all_cryptos}), status=200, mimetype='application/json')
+            from blueprints.api import api_get
+            return Response(json.dumps({'Owned': all_cryptos, 'Market price': api_get(dict=True), 'links': {
+                "Buy crypto(POST)": f"/api/v1.0/wallets/buy/{token}",
+                "Sell crypto(POST)": f"/api/v1.0/wallets/sell/{token}"
+            }}), status=200, mimetype='application/json')
 
 
 class WalletBuy(Resource):
